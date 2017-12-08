@@ -1,0 +1,33 @@
+{
+  "short_name": "Bohnen-Theke [draft]",
+  "name": "Die Rocket Beans TV Mediathek [draft]",
+  "icons": [
+    {
+      "src": "launcher-icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "launcher-icon-2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "launcher-icon-3x.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "launcher-icon-4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "launcher-icon-8x.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    }
+  ],
+  "display": "standalone",
+  "background_color": "#FFFFFF"
+}

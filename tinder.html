@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="utf-8">
+  <link rel="manifest" href="manifest.json">
+  <link type="text/css" rel="stylesheet"  href="style.css"/>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js" type="text/javascript"></script>
+  <script src="//medientheke.000webhostapp.com/playlists.js" type="text/javascript" ></script>
+  <script src="//medientheke.000webhostapp.com/categories.js" type="text/javascript" ></script>
+  <script src="inittinder.js" type="text/javascript" ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Medientheke</title>
+</head>
+<body>
+  <div class="cookie-notify" id="cookie-notify"></div>
+  <div class="loader" id="loader"></div>
+  <!-- Hauptmenu -->
+  <nav id="main-menu">
+    <div id="mm-fav"> </div>
+    <div id="mm-tinder"> </div>
+    <div id="mm-rubriken"> </div>
+    <div id="mm-playlist"> </div>
+    <div id="mm-properties"> </div>    
+  </nav>
+
+  <div class="main-content">
+    <!-- FAVORITEN-CONTAINER -->
+    <div class="favoriten-container" id="favoriten-container">
+      <div id="all-favorites-nav">
+        <div class="swipe-container-nav">
+          <div><h2> Alle Favoriten </h2></div>
+        </div>
+        <div id="favoriten-ohne-neue-folgen-container">
+          <!-- Namen der Playlists-->
+        </div>
+      </div>
+      <h1>Neue Folgen</h1>    
+      <div class="favoriten-container-neu" id="favoriten-mit-neuen-folgen-container">
+        <!-- HIER WERDEN FAVORITEN-TEMPLATES DES FAVORITEN-CONTAINERS EINGEFUEGT -->
+      </div>
+      <!-- Hier sollen noch Swiper hin (neueste Aktivitaet, neue Formate, und ein Button mit weitere Laden) -->
+    </div> <!-- ENDE DES FAVORITEN-CONTAINERS -->
+
+    <!-- TINDER-CONTAINER -->
+    <div id="tinder-container">
+      <!-- List of Buttons HIER KOMMEN DIE TINDER-TEMPLATES HIN -->
+      <nav class="tinder-nav">
+        <Button>bannen</button>
+        <Button>unentschlossen</button>
+        <Button>favorit</button>
+      </nav>
+      <!-- Namen der Playlists -->
+      <!------------------------------------------------------------
+      -------------------------------------------------------------->
+    </div> <!-- ENDE DES TINDER-CONTAINERS -->
+
+    <!-- CATEGORIEN-CONTAINER -->
+    <div id="categories-container">
+      <!-- LISTE DER KATEGORIEN--------------------------------------------------------
+      --------------------------------------------------------->
+    </div> <!-- ENDE DES CATEGORIES-CONTAINERS -->
+
+    <!-- SINGLE-PLAYLIST-CONTAINER ------------------------------------------------------->
+    <div id="single-playlist-container">
+      <div id="single-video-content">
+        <iframe id="videoFrame" width="360" height="202" src="https://www.youtube-nocookie.com/embed/j6He5m7pOM0" frameborder="0" allowfullscreen></iframe>
+        <div id="single-video-infos-div">
+          <div id="sv-published-at-div"> publishedAt </div>
+          <div id="sv-duration-div"> Dauer </div>
+          <div id="sv-view-count-div"> viewCount </div>
+          <div id="sv-like-count-div"> likeCount </div>
+          <div id="sv-title-div"><h4 id="title-h"> Titel </h4></div>
+          <div id="add-to-fav-div"> add </div>
+          <div id="remove-from-fav-div"> del </div>
+          <div id="show-description-div"><img src="./img/showDescriptionDown.svg" alt="show more"></div>
+          <a id="open-YT-App"><div id="watch-in-app-div"><img src="./img/openExternal.svg" alt="watch external"></div></a>
+          <div id="description-div" class="invisible"> Description </div>
+        </div>
+      </div>
+      <div id="single-playlist-content">
+        <nav class="swipe-container-nav" id="swipe-container-nav">
+          <div id="sc-item-count-div"> X Folgen </div>
+          <div id="sc-published-at-div"><!--Datum--></div>
+          <!-- <div id="sc-duration-div"> Dauer </div> -->
+          <div id="sc-view-count-div"><!--Views--></div>
+          <div id="sc-like-count-div"><!--Likes--></div>
+          <div id="sc-show-all-div"> Alle anzeigen </div>
+        </nav>
+        <div class="swipe-container" id="video-list-auswahl-position">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container" id="video-list-auswahl-position-invers">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container" id="video-list-auswahl-views">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container" id="video-list-auswahl-views-invers">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container" id="video-list-auswahl-likes">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container" id="video-list-auswahl-likes-invers">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+        <div class="swipe-container-all" id="video-list">
+          <!-- Namen der PlaylistItems-->    
+        </div>
+      </div>
+      <div id="single-playlist-related-playlists">
+      </div>
+      <div id="single-playlist-last-updated-playlists">
+      </div>      
+    </div> <!-- ENDE DES Single-Playlist-CONTENTS -->
+    
+    <!-- PROPERTIES-CONTAINER ------------------------------------------------------->
+    <div id="properties-container">
+      <a href="https://www.youtube.com/user/rocketbeanstv/live">
+        <div id="developed-with-youtube">
+          LOGO SHOULD BE ON EVERY SIDE, NEXT TO THE USE OF THE API.
+        </div>
+      </a>
+      <div id="terms-of-use">
+        <a href="#terms-of-use/">Nutzungsbedingungen</a>
+      </div>
+      <div id="youtubes-terms-of-service">
+        <a href="https://www.youtube.com/t/terms">
+          YouTube's Terms of Service
+        </a>
+      </div>
+      <div id="impressum">
+        <a href="#impressum/">
+          Impressum
+        </a>
+      </div>
+      <div id="privacy-policy">
+        <a href="#privacy-policy/">
+          Datenschutz
+        </a>
+      </div>
+      <div id="googles-privacy-policy">
+        <a href="https://www.google.com/policies/privacy">
+          Google Privacy Policy
+        </a>
+      </div>
+      <button id="cookie-revoke-button">
+        Cookie-Entscheidung widerrufen
+      </button>
+    </div> <!-- ENDE DES PROPERTIES-CONTAINERS -->
+
+    <!-- IMPRESSUM-CONTAINER ------------------------------------------------------->
+    <div id="impressum-container">
+      <h1>Impressum</h1>
+      <h2>Angaben nach $ 5 TMG:</h2>
+      <p>
+        Mathias Fischer<br />
+        Woldeforsterstraße 1<br />
+        17109 Demmin<br/>
+        <br/>
+        m e d i e n t h e k e (ät) g m a i l . c o m <br />
+        0 1 5 7 - 8 1 9 8 0 5 3 9
+      </p>
+    </div>
+
+    <!-- TERMS-OF-USE-CONTAINER ------------------------------------------------------->
+    <div id="terms-of-use-container">
+      <h1>Nutzungsbedingungen</h1>
+      Mit Ihrer Nutzung dieser Internetseite oder dem Zugriff darauf, stimmen Sie diesen Nutzungsbedingungen
+      in ihrer jeweils gemäß nachfolgendem Abschnitt "Änderungen der Nutzungsbedingungen" aktualisierten
+      Fassung  und der Datenschutzerklärung unter
+      <a href="https://medientheke.github.io/#privacy-policy">https://medientheke.github.io/#privacy-policy</a>
+      zu.
+      <h2>YouTube Terms of Service</h2>
+      <p>
+        Sie erklären sich bereit, sich an die Nutzungsbedingungen von YouTube zu halten. YouTube Terms of Service finden Sie unter <a href="https://www.youtube.com/t/terms">https://www.youtube.com/t/terms</a>.
+      </p>
+      <h2>Kein Schindluder</h2>
+      <p>
+        Sie erklären sich weiter bereit, weder mit dieser Seite noch mithilfe dieser Seite Schindluder zu treiben.
+      </p>
+      <h2>Urheberrecht</h2>
+      <p>
+        Für meine erstellten Inhalte und Werke auf diesen Seiten gilt das deutsche Urheberrecht.
+        Die Vervielfältigung, Bearbeitung, Verbreitung und jede
+        Art der Verwertung außerhalb der Grenzen des Urheberrechtes benötigen meine schriftliche Genehmigung.
+        Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
+        Downloads und Kopien eingebetteter YouTube-Videos ist nach den YouTube Term of Service (<a href="https://www.youtube.com/t/terms">https://www.youtube.com/t/terms</a>) untersagt.
+      </p>
+      <p>
+        Für nicht von mir erstellte Inhalte werden die
+        Urheberrechte Dritter beachtet. Insbesondere gilt dies auch für das Einbetten, das sogenannte Framing, von Videos.
+        Die Inhalte von Dritten werden als solche gekennzeichnet. Sollte trotzdem eine Urheberrechtsverletzung vorliegen,
+        werde ich bei Bekanntwerden die entsprechenden Inhalte entfernen. Geben Sie mir hierfür entsprechend Bescheid.
+      </p>
+      <h2>Haftungsausschluss für Inhalte</h2>
+      <p>
+        Als Betreiber bin ich nach $ 7 Abs.1 TMG für meine eigenen Inhalte auf diesen
+        Seiten nach den allgemeinen Gesetzen verantwortlich.
+        Nach $ 8 bis 10 TMG bin ich aber nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen
+        zu überwachen oder nach Umständen zu forschen, die auf rechtswidrige Tätigkeiten hinweisen.
+      </p>
+      <p>
+        Die Verpflichtung zur Entfernung oder Sperrung der Nutzung von Informationen
+        nach den allgemeinen Gesetzen besteht aber weiterhin.
+        Eine damit eingehende Haftung ist aber erst mit der Kenntnis einer
+        konkreten Rechtsverletzung möglich.
+        Bei entsprechenden Rechtsverletzungen werden die betroffenden Inhalte mit dem Zeitpunkt des Bekanntwerdens der Rechtsverletzung entfernt.
+      </p>
+      <h2>Haftungausschluss für Links</h2>
+      <p>
+        Auf dieser Internetseite existieren Links, die zu externen Internetseiten (z. B. Youtube) führen.
+        Auf deren Inhalte habe ich keinen Einfluss, weshalb ich für diese externen Inhalte auch keine
+        Gewähr übernehme. Dafür sind die Betreiber der entsprechenden Seiten selbst verantwortlich.
+        Aber zum Zeitpunkt der Verlinkung habe ich die verlinkten Seiten auf
+        mögliche Rechtsverstöße untersucht, welche aber nicht erkennbar waren.
+      </p>
+      <p>
+        Sollten Rechtsverstöße bekannt werden, werde ich die entsprechenden Links umgehend entfernen.
+        Eine permanente Untersuchung der verlinkten Seiten auf Rechtsverstöße ist ohne konkrete Anhaltspunkte nicht zumutbar.
+      </p>
+      <h2>Änderung der Nutzungsbedingungen</h2>
+      <p>
+        Ich halte mir vor, von Zeit zu Zeit Änderungen an den Nutzungsbedingungen vorzunehmen,
+        welche dann unter
+        <a href="https://medientheke.github.io/#terms-of-use">https://medientheke.github.io/#terms-of-use</a>
+        veröffentlicht werden.
+        Mit der Nutzung der Internetseite oder dem Zugriff darauf
+        nach dem Veröffentlichen der geänderten Nutzungsbedingungen unter
+        <a href="https://medientheke.github.io/#terms-of-use">https://medientheke.github.io/#terms-of-use</a>
+        akzeptieren Sie die geänderten Nutzungsbedingungen.
+      </p>
+      <h2>Kein Spam</h2>
+      <p>
+        Ich widerspreche hiermit die Nutzung der Kontaktinformationen im Impressum zur Übersendung von nicht
+        ausdrücklich angeforderter Werbung oder Informationsmaterialien (oder anderweitigem Spam) und behalte
+        mir ausdrücklich rechtliche Schritte im Falle bei Missachtung vor.
+      </p>
+      <h2>Salvatorische Klausel</h2>
+      <p>
+        Sollten einzelne Bedingungen unwirksam oder undurchführbar sein,
+        bleibt davon die Wirksamkeit der übrigen Bedingungen unberührt.
+      </p>
+    </div>
+    <!-- PRIVACY-POLICY-CONTAINER ------------------------------------------------------->
+    <div id="privacy-policy-container">
+      <h1>Datenschutzerklärung</h1>
+      <h2>Datenschutz</h2>
+      <p>
+        Ich, der Betreiber dieser Seite nehme den Schutz Ihrer persönlichen Daten sehr ernst,
+        behandle Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen
+        Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+      </p>
+      <p>
+        Die Nutzung der Webseite ist im Allgemeinen ohne Angabe personenbezogener Daten möglich.
+        Wenn auf der Seite dennoch personenbezogene Daten erhoben werden, dann werden diese Daten, soweit möglich,
+        stets auf freiwilliger Basis erhoben und nicht ohne Ihre explizite Zustimmung an Dritte weitergegeben.
+      </p>
+      <p>
+        Ich weise darauf hin, dass die Datenübertragung im Internet Sicherheitslücken aufweisen kann.
+        Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.
+      </p>
+      <h2>SSL-Verschlüsselung</h2>
+      <p>
+        Diese Seite nutzt aus Gründen der Sicherheit und zum Schutz der Übertragung vertraulicher
+        Inhalte eine SSL-Verschlüsselung, was Sie am Schloss-Symbol in der Browserzeile und am "https://"
+        am Anfang der Adresszeile Ihres Browsers erkennen.
+      </p>
+      <p>
+        Bei aktivierter SSL-Verschlüsselung können die Daten, die Sie übermitteln, nicht von
+        Dritten mitgelesen werden.
+      </p>
+      <h2>Cookies</h2>
+      <p>
+        Diese Internetseite verwendet teilweise so genannte Cookies.
+        Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren.
+        Es sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert.
+        Die Cookies werden verwendet, um diese Internetseite nutzerfreundlicher zu machen.
+      </p>
+      <p>
+        Die meisten der von mir verwendeten Cookies sind so genannte „Session-Cookies“.
+        Sie werden nach dem Ende Ihres Besuchs automatisch gelöscht.
+        Andere Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese löschen.
+        Diese Cookies ermöglichen es, Ihre persönlichen Einstellungen (z. B. Ihre Favoritenliste) abzuspeichern
+        oder Ihren Browser beim nächsten Besuch wiederzuerkennen.
+      </p>
+      <p>
+        Bevor diese Internetseite Cookies verwendet, wird von Ihnen eine Erlaubnis über das Setzen von Cookies eingeholt.
+        Sie können Ihre Entscheidung jederzeit <a href="#properties/">hier</a> widerrufen.
+        Außerdem können Sie unabhängig von dieser Entscheidung auch Ihren Browser so einstellen,
+        dass Sie über das Setzen von Cookies informiert werden,
+        Cookies automatisch beim Schließen des Browser löschen oder
+        Cookies in Einzelfällen oder generell erlauben bzw verbieten.
+        Mehr dazu finden Sie z. B. auf <a href="https://www.cookiesandyou.com">cookiesandyou.com</a>.
+        Bei der Deaktivierung von Cookies kann die Funktionalität dieser Website eingeschränkt sein.
+      </p>
+      <h2>YouTube</h2>
+      <p>
+        Diese Webseite nutzt Services (z. B. die YouTube Data API) der von Google betriebenen Seite YouTube.
+        Betreiber der Seiten ist die YouTube, LLC, 901 Cherry Ave., San Bruno, CA 94066, USA.
+        Wenn Sie eine mit einem YouTube-Plugin (z. B. der YouTube Data API v3
+        oder einem eingebettetem YouTube-Video) ausgestatteten Seite besuchen,
+        wird eine Verbindung zu den Servern von YouTube hergestellt.
+        Dabei wird dem YouTube-Server mitgeteilt, welche Seite Sie besucht haben.
+      </p>
+      <p>
+        Wenn Sie eine mit einem YouTube-Plugin (z. B. der YouTube Data API v3
+        oder einem eingebettetem YouTube-Video) ausgestatteten Seite besuchen,
+        können Cookies von YouTube (sogenannte third-party-cookies) gesetzt werden.
+        Auf diese Cookies habe ich, als Betreiber meiner Seite keinen Einfluss.
+        Sie können das Setzen von third-party-cookies unterbinden, indem Sie keine Erlaubnis zum Setzen von Cookies erteilen.
+        Außerdem können Sie unabhängig davon auch Ihren Browser so einstellen, dass
+        Sie Cookies von Drittanbietern nicht akzeptieren.
+      </p>
+      <p>
+        Wenn Sie in Ihrem YouTube-Account eingeloggt sind, ermöglichen Sie YouTube, Ihr Surfverhalten direkt Ihrem
+      YoutTube-Account zuzuordnen. Dies können Sie unterbinden, indem Sie sich aus Ihrem
+      YouTube-Account ausloggen.
+      </p>
+      <p>
+        Weitere Informationen zum Umgang von Nutzerdaten finden Sie in der Datenschutzerklärung von YouTube unter:
+        <a href="https://www.google.de/intl/de/policies/privacy">https://www.google.de/intl/de/policies/privacy</a>
+        <!-- Google Privacy Policy at http://www.google.com/policies/privacy -->
+
+      </p>
+    </div> <!-- ENDE DES PRIVACY-POLICY-CONTAINERS ------------------------------------------------------->
+
+
+    <!-- FAVORITEN-TEMPLATE DES FAVORITEN-CONTAINERS -->
+    <template id="new-episode-favorite-template">
+      <div class="rahmen">
+        <div class="playlist-id">
+          <picture>
+            <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+               {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+            <!-- fallback -->
+            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+          </picture>
+          <div class="info-div">
+            <div class="video-count">&#8227 {{video-count}}</div>
+            <div class="title-div"><h3>{{title}}</h3></div>
+            <button class="playlist-id">Alle Folgen anzeigen</button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="all-favorites-template">
+      <div class="all-favorites-swiper-rahmen">
+        <div class="all-favorites-thumbnail-div">
+          <picture>
+            <source media="(max-width: 80px)" srcset="{{thumbnail-120w.jpg}} 1x, {{thumbnail-120w.jpg}} 1.5x, {{thumbnail-320w.jpg}} 2x, {{thumbnail-320w.jpg}} 4x,{{thumbnail-480w.jpg}} 5.75x,
+               {{thumbnail-640w.jpg}} 8x, {{thumbnail-1280w.jpg}} 16x">
+            <!-- fallback -->
+            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+          </picture>
+        </div>
+      </div>
+    </template>
+
+    <!-- TINDER-TEMPLATE DES TINDER-CONTAINER -->
+    <template id="tinder-template">
+      <div class="rahmen">
+        <div class="playlist-id">
+          <picture>
+            <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+               {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+            <!-- fallback -->
+            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+          </picture>
+          <div class="info-div">
+            <!-- <div class="published-at-div">&#8227 am {{published-at}} ver�ffentlicht</div> -->
+            <!-- <div class="last-update-div">&#8227 {{last-update}} aktualisiert</div> -->
+            <div class="video-count">&#8227 {{video-count}}</div>
+            <div class="title-div"><h3>{{title}}</h3></div>
+            <button class="playlist-id">Alle Folgen anzeigen</button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- TEMPLATES DES CATEGORIES-CONTAINERS ---------------------->
+    <template id="swipe-container-nav-template">
+      <div class="swipe-container-nav">
+        <div><h3> Kategorie </h3></div>
+      </div>
+    </template>
+
+    <template id="category-template">
+      <div class="video-swiper-rahmen">
+        <div class="thumbnail-div">
+          <picture>
+            <source media="(max-width: 160px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+               {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+            <!-- fallback -->
+            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+          </picture>
+        </div>
+        <div class="info-div">
+          <div>924 Videos</div>
+          <div>16.11.2024 - 15.09.2012 aktiv</div>
+        </div>
+        <div class="title-div">
+          <h5>{{title}}</h5>
+        </div>
+        <button class="add-to-fav" id="add-and-remove-fav-div"> </button>
+      </div>
+    </template>
+
+    <!-- VIDEO-TEMPLATE DES VIDEO-CONTAINER -->
+    <template id="single-playlist-swiper-info-block-template">   
+      <div class="swiper-info-block">
+        <div id="sib-published-at-div"> publishedAt </div>
+        <div id="sib-duration-div"> Dauer </div>
+        <div id="sib-view-count-div"> viewCount </div>
+        <div id="sib-like-count-div"> likeCount </div>
+        <div id="sib-title-div"><h5 id="sib-title"> Titel </h5></div>        
+      </div>
+    </template>
+
+    <template id="video-template-new">
+      <div class="video-swiper-rahmen">
+        <div class="thumbnail-div">
+          <picture>
+            <source media="(max-width: 160px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+               {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+            <!-- fallback -->
+            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+          </picture>
+        </div>
+        <div class="duration-div">
+          <div class="duration">&#8227 {{duration}}</div>
+        </div>
+        <div class="published-at">&#8227 {{published-at}}</div>
+        <div class="title-div">
+          <h5>{{title}}</h5>
+          <div class="info-div">
+            <div class="view-count">&#8227 {{view-count}}</div>
+            <div class="like-count">&#8227 {{like-count}}</div>
+          </div>
+        </div>
+      </div>  
+    </template>
+
+
+  
+  </div> <!-- ENDE DES MAIN-CONTENTS -->
+  
+</body>
+</html>

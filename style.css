@@ -1,0 +1,853 @@
+/*************************************************/
+/*        Fuer die Favoriten-Seite                */
+/*************************************************/
+
+/***********  *,html und body, ol, ul, li  *******************/
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html, body{
+  /*height: 100%;
+  width: 100%;*/
+  color: #444444; /*Standardwert der Schriftfarbe ist hier eingestellt*/
+  /*Schriftarten-gedoens*/
+    font-family: sans-serif; /*hab hier keine nicht-Standard-schriftart*/
+    font-weight: 400; /*die Strichdicke der Schriftart: 100 extraduenn - 900 extradick*/
+    /*font-display; optional; /*benoetigt bei mehreren nicht-standard Schriftarten und
+                              beschreibt den Umgang mit dessen Download bzw den fall-back-fonts*/
+    /*das Rendering von Text wird im folgenden geaendert. Costum-Fonts oder auch heller Text auf 
+     * dunklem Untergrund sieht duenner aus */
+    /* -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; */    
+}
+
+html{
+  /*overflow: hidden;*/  /*hidden sorgt dafuer, dass keine scrollleisten kommen*/
+}
+
+body{
+  /*Erscheinungsbild des Bodys*/
+    background: #ececec;
+  /*Anordnung der Elemente im Body*/
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /*Reihenfolge der Elemente*/
+        -webkit-box-orient: vertical;
+     -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    /*Verhalten der Elemente am Zeilenende*/
+    -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+    /*Abstaende/Anordnung der Elemente innerhalb einer Zeile*/
+           -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+              -ms-flex-pack: start;
+            justify-content: flex-start;
+    /*Verhalten der Hoehen der Elemente innerhalb einer Zeile*/
+       -webkit-box-align: stretch;
+     -webkit-align-items: stretch;
+          -ms-flex-align: stretch;
+             align-items: stretch;
+    /*Abstaende/Verhalten der verschiedener Zeilen zueinander*/
+     -webkit-align-content: stretch;
+        -ms-flex-line-pack: stretch;
+             align-content: stretch;
+
+}
+
+ul, ol{
+  list-style-type:none;
+}
+
+li{
+  overflow: hidden;
+}
+
+
+/*************  der Header  **********************/
+
+.header{
+  /*groe�e:*/
+    width: 100%;
+    height: 50px;
+  /*position des Headers*/
+    /*position:fixed; /*am oberen Rand fixiert*/
+    position:sticky;
+    top:0;
+    z-index: 1000000;
+  /*Raender, Abstaende, Schatten und co*/
+    padding: 0.5rem 1.333rem 0 1.333rem;
+    box-shadow: 0 0.333rem 0.417rem 0 rgba(0, 0, 0, 0.14), 0 0.167rem 0.75rem 0.083rem rgba(0, 0, 0, 0.12), 0 0.333rem 0.167rem -0.167rem rgba(0, 0, 0, 0.2);
+  /*Erscheinungsbild des Headers*/
+    background: #3F51B5; /*hintergrundfarbe #3F51B5=blaeulich*/
+  /*Erscheinungsbild der Schrift im Header*/
+    color: #FFFFFF; /*Schriftfarbe #FFFFFF=weiss*/
+    font-size: 1.667rem;
+  /*Anordnung der Elemente im Header*/
+    /*display: -webkit-box;    veraltet*/
+    /*display: -webkit-flex;   veraltet*/
+    /*display: -ms-flexbox;    veraltet*/
+    display: flex;
+    /*    -webkit-box-orient: horizontal;  veraltet*/
+    /* -webkit-box-direction: normal;      veraltet*/
+   /*-webkit-flex-direction: row;          veraltet*/
+    /*    -ms-flex-direction: row;         veraltet*/
+            flex-direction: row;
+    /*-webkit-flex-wrap: nowrap;            veraltet*/
+    /*    -ms-flex-wrap: nowrap;            veraltet*/
+    /*        flex-wrap: nowrap;            veraltet*/
+    /*       -webkit-box-pack: start;       veraltet*/
+    /*-webkit-justify-content: flex-start;  veraltet*/
+    /*          -ms-flex-pack: start;       veraltet*/
+            justify-content: flex-start;
+    /*  -webkit-box-align: stretch;   veraltet*/
+    /*-webkit-align-items: stretch;   veraltet*/
+    /*  -ms-flex-align: stretch;      veraltet*/
+          align-items: stretch;
+    /*-webkit-align-content: center;   veraltet*/
+    /*   -ms-flex-line-pack: center;   veraltet*/
+            align-content: center;
+  /*Header-Transformationen*/
+    /*noch verwende ich keine transformationen*/
+    /*    will-change: transform; /*erklaert dem browser, dass er sich auf ein transformen des Headers vorbereiten soll
+     *    -webkit-transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+     *            transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+     *            transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+     *            transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s, -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;*/
+}
+
+.header .header-button{
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1.333rem;
+  opacity: 0.54; /*opacity gibt die Deckkraft des Buttons samt border und outline an */
+    /*die Deckkraftaenderung verlaeuft nicht-linear nach cubic-bezier(n,n,n,n) innerhalb 0.333s*/
+    /*Bisher habe ich nirgends eine Deckkraftaenderung von Header-Buttons angegeben*/
+      /*-webkit-transition: opacity 0.333s cubic-bezier(0,0,0.21,0); /* Safari */
+      /*        transition: opacity 0.333s cubic-bezier(0,0,0.21,0);*/
+  text-indent: -30000px; /*Text-intent gibt den Einzug vom Test in der ersten Zeile an*/
+  /*�berstehender Text vom Button wird nicht angezeigt*/
+    overflow: hidden;
+  /*wir entfernen die Standardwerte des Buttons*/
+    border: none;
+    outline: none;
+  /*damit der Mauszeiger zu einer Hand wird beim r�bergehen*/
+    cursor: pointer;
+}
+
+.header #refresh-button{
+    background: url(http://www.fotocommunity.de/assets/images/category/category_travel.jpg) center center no-repeat;
+}
+
+.header #entdecken-button{
+  background: url(http://www.fotocommunity.de/assets/images/category/category_travel.jpg) center center no-repeat;
+}
+
+.header-title{
+  font-weight:400;  /*Schriftdicke dicker gemacht*/
+  font-size:1.667rem;   /*Schriftgr��e gr��er gemacht*/
+  margin:0;         /*kein Abstand zum umliegenden Header-Container*/
+  /*Alle Flex-Elemente im Header-Container erhalten die selbe L�nge, unabh�ngig von ihrem Inhalt*/
+    -webkit-box-flex: 1; /* weiss nicht wofuer*/
+        -webkit-flex: 1; /* Safari 6.1+ */
+            -ms-flex: 1; /* IE 10 */
+                flex: 1;
+}
+
+
+html, body{
+    /*height: 100%;*/
+    width: 100%;
+}
+
+/*************************************************/
+/* das Tinder-template (und fuer neue Favoriten) */
+/*************************************************/
+/*<div class="tinder-container" id="tinder-container">
+ *  <nav class="tinder-nav">
+ *   <Button>bannen</button>
+ *   <Button>unentschlossen</button>
+ *   <Button>Favorit</button>
+ * </nav>
+ */
+/*   <div class="rahmen">
+ *     <div class="playlist-id">
+ *       <picture>
+ *         <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+ *            {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+ *         <!-- fallback -->
+ *         <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+ *       </picture>
+ *       <div class="info-div">
+ *         <div class="title-div"><h3>{{title}}</h3></div>
+ *         <div class="published-at-div">&#8227 am {{published-at}} ver�ffentlicht</div>
+ *         <div class="last-update-div">&#8227 {{last-update}} aktualisiert</div>
+ *         <div class="video-count">&#8227 {{video-count}}</div>
+ *         <button class="playlist-id">Alle Folgen anzeigen</button>
+ *       </div>
+ *     </div>
+ *   </div>
+ */
+
+#favoriten-mit-neuen-folgen-container{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.rahmen{
+  width: 360px;
+  max-width: 100%;
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-content: flex-start;
+}
+.rahmen>div{
+  width: 360px;
+  max-width: 100%;
+  border: 1px solid lightgrey;
+  background: #fff;
+  display:flex; flex-wrap: wrap; justify-content: center; align-content: flex-start;
+}
+.rahmen img{
+  margin-top: 20px;
+  width: 320px; max-width: 100%; height: auto;
+}
+.rahmen .info-div{
+  width: 320px; max-width: 100%;
+  display:flex; flex-wrap: wrap; justify-content: space-between; align-content: flex-start;
+}
+.rahmen .title-div{
+  width: 100%;
+  color: black;
+  padding: 0px 0 5px 0;
+  border-bottom: 1px solid lightgrey;
+}
+.rahmen .video-count, .rahmen .last-update-div, .rahmen .publidhed-at-div{
+  width: 100%;
+}
+.rahmen .video-count{
+  font-size: 0.85rem;
+  /*border-bottom: 1px solid lightgrey;*/
+}
+.rahmen button{
+  width: 100%;
+  height: 48px;
+  font-size: 1rem;
+  margin: 0px 0 0px 0; border: 0; padding: 0;
+}
+
+.tinder-nav {
+  z-index:100000;
+  position: fixed;
+  bottom: 48px;
+}
+
+.tinder-nav button{
+  width:48px;
+  height:48px
+}
+
+/*************************************************/
+/*             Main-Menu                         */
+/*************************************************/
+
+#main-menu{
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2),
+              /*0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -2px 9px 1px rgba(0, 0, 0, 0.12),*/
+              0 -4px 2px -2px rgba(0, 0, 0, 0.2),
+              inset 0px -40px 50px -50px rgba(0,0,0,0.75);
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  z-index: 99;
+  width: 100%;
+  min-height: 48px;
+  border-top: 1px solid darkgrey;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#main-menu div{
+  width:48px;
+  height:48px;
+}
+#mm-fav{
+  background: url(img/home.svg) center center no-repeat;
+}
+#mm-tinder{
+  background: url(img/tinder.svg) center center no-repeat;
+}
+#mm-rubriken{
+  background: url(img/categories.svg) center center no-repeat;
+}
+#mm-playlist{
+  background: url(img/video.svg) center center no-repeat;
+}
+#mm-properties{
+  background: url(img/properties.svg) center center no-repeat;
+}
+
+.main-content{
+  padding: 0 0 48px 0;
+}
+
+/*************************************************/
+/*             video-template                    */
+/*************************************************/
+/* <template id="video-template">
+ *   <div class="video-rahmen">
+ *     <div>
+ *       <img src="{{thumbnail-120px.jpg}}" alt="{{thumbnail-order}}">
+ *     </div>
+ *     <div>
+ *       <div><h5>titel</h5></div>
+ *       <div class="daten">publishedAt - viewCount - likeCount</div>
+ *     </div>
+ *   </div>
+ * </template>
+ */
+
+.video-rahmen{
+  width: 100%;
+  display: flex;
+}
+.video-rahmen img{
+  width: 80px;
+  height: 45px;
+}
+.video-rahmen>div:first-child{
+  width: 80px;
+}
+.video-rahmen>div{
+  width: calc(100% - 80px);
+}
+
+/************************************************/
+/*              videoFrame                      */
+/************************************************/
+#videoFrame{
+  width: 100vw;
+  max-width: 720px;
+  max-height: 405px;
+  height: 56.25vw;
+}
+
+
+/************************************************/
+/*         single-video-content                 */
+/************************************************/
+/* <div id="single-video-content">
+ *   <iframe id="videoFrame" width="360" height="202" src="https://www.youtube.com/embed/jYiQuEQriaI" frameborder="0" allowfullscreen></iframe>
+ *   <div id="sv-published-at-div"> publishedAt </div>
+ *   <div id="sv-duration-div"> Dauer </div>
+ *   <div id="sv-view-count-div"> viewCount </div>
+ *   <div id="sv-like-count-div"> likeCount </div>
+ *   <div id="single-video-title-div">
+ *   <div><h4 id="title-h"> Titel </h4></div>
+ *   <div id="show-description-div"> mehr </div>
+ *   <div id="watch-in-app-div"><a id="open-YT-App">youtube app</a></div>
+ *   <div id="add-to-fav-div"> add </div>
+ * </div>
+ * <div id="description-div"> Description </div>
+ */
+#single-video-content{
+  width: 100%;
+  background: #fff;
+  padding: 0 0 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border-bottom: 1px solid lightgrey;
+}
+#single-video-infos-div{
+  /*margin: 0px 10px 0 10px;*/
+  width: 425px;
+  max-width: 100%;
+  margin: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+#sv-published-at-div, #sv-duration-div, #sv-view-count-div, #sv-like-count-div{
+  font-size: 0.9rem;
+}
+#sv-title-div{
+  width: 100%;
+}
+#title-h{
+  margin: 0 10px 0 10px;
+}
+#watch-in-app-div{
+  height: 40px;
+  width: 40px;
+}
+#show-description-div{
+  width: 40px;
+  height: 40px;
+}
+#description-div{
+  padding: 0 0 20px 0;
+  margin: 0 10px 0 10px;
+}
+#add-to-fav-div{
+  border: 1px solid black;
+  align-self: flex-end;
+}
+/************************************************/
+/*         single-playlist-content              */
+/************************************************/
+#single-playlist-content{
+  background: white;
+  border: 1px solid lightgrey;
+  /*padding: 0 0 10px 0;*/
+  margin: 0 0 5px 0;
+}
+#single-playlist-related-playlists{
+  background: white;
+  border: 1px solid lightgrey;
+  /*padding: 0 0 10px 0;*/
+  margin: 0 0 5px 0;
+}
+#single-playlist-last-updated-playlists{
+  background: white;
+  border: 1px solid lightgrey;
+  /*padding: 0 0 10px 0;*/
+  margin: 0 0 5px 0;
+}
+
+/****************************************/
+/* #all-favorites-nav in favoriten-page */
+/****************************************/
+
+#all-favorites-nav{
+  width: 100%;
+}
+
+#favoriten-ohne-neue-folgen-container{
+  width: 100%;
+  overflow-y:auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+#favoriten-ohne-neue-folgen-container>div{
+  width: 80px;
+  margin: 0px 3px 7px 3px;
+}
+
+#favoriten-ohne-neue-folgen-container div img{
+  width: 80px;
+}
+
+/*************************************************/
+/* single-playlist-swiper-info-block-template    */
+/*************************************************/
+/*<div class="swiper-info-block">
+ *  <div id="sib-published-at-div"> publishedAt </div>
+ *  <div id="sib-duration-div"> Dauer </div>
+ *  <div id="sib-view-count-div"> viewCount </div>
+ *  <div id="sib-like-count-div"> likeCount </div>
+ *  <div id="sib-title-div"><h5 id="sib-title"> Titel </h5></div>        
+ *</div>
+ */
+.swiper-info-block{
+  width: 100vw;
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+#sib-active-time-div, #sib-item-count-div, #sib-published-at-div, #sib-duration-div, #sib-view-count-div, #sib-like-count-div{
+  font-size: 0.85rem;
+}
+#sib-title-and-interaction-div{
+  width: calc(100% - 48px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+#sib-title-and-interaction-div div{
+  padding: 0px 10px 0 10px;
+}
+#sib-c-title-div{
+  width: 100%;
+}
+#sib-title-div{
+  margin: 0px 10px 0 10px;
+  width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+#sib-title{
+  margin: 0 10px 0 10px;
+  width: calc(100% - 20px);
+  flex-shrink: 0;
+}
+
+.add-to-fav{
+  padding: 0;
+  margin: 0;
+  border: none;
+  width:48px;
+  height:48px;
+  background: url(img/add-fav.svg) center center no-repeat;
+}
+.remove-from-fav{
+  padding: 0;
+  margin: 0;
+  border: none;
+  width:48px;
+  height:48px;
+  background: url(img/del-fav.svg) center center no-repeat;
+}
+
+/********************************************************************/
+/* #swipe-container-nav in single-playlist-page und categories-page */
+/********************************************************************/
+.swipe-container-nav{
+  position: relative;
+  z-index: 10;
+  padding: 10px;
+  /*box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2),*/
+              /*0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -2px 9px 1px rgba(0, 0, 0, 0.12),*/
+              /*0 -4px 2px -2px rgba(0, 0, 0, 0.2),*/
+              /*inset 0px -35px 50px -50px rgba(0,0,0,0.75);*/
+  width: 100%;
+  background: white;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  
+}
+/*#swipe-container-nav>div:first-child{
+ * border-top: lightgrey;
+ * margin-left:8px;
+ * flex-shrink: 0;
+}*/
+#swipe-container-nav #sc-item-count-div{
+  
+}
+#swipe-container-nav #sc-like-count-div, #swipe-container-nav #sc-view-count-div,#swipe-container-nav #sc-published-at-div{
+  height:40px;
+  width: 40px;
+  margin-right: 8px;
+}
+#sc-published-at-div{
+  background-image: url(./img/position.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#sc-view-count-div{
+  background-image: url(./img/views.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+#sc-like-count-div{
+  background-image: url(./img/likesDown.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/*************************************************/
+/*  SWIPE-CONTAINER in der single-Playlist-Page  */
+/*************************************************/
+.swipe-container{
+    background-color: white;
+    width: 100%;
+    overflow-y: auto;
+    /*Eigenschaften fuer die Kinder*/
+    display: flex;
+    justify-content: flex-start;
+}
+/*.swipe-container-all{
+ *   background-color: white;
+ *   width: 100%;
+ *   display: flex;
+ *   flex-direction: column;
+ *   justify-content: flex-start;
+}*/
+
+/*************************************************/
+/*        die Single-Playlist-Page-Swiper        */
+/*************************************************/
+/*    <template id="video-template-new">
+ *     <div class="video-swiper-rahmen">
+ *       <div class="thumbnail-div">
+ *         <picture>
+ *           <source media="(max-width: 160px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+ *              {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
+ *           <!-- fallback -->
+ *           <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
+ *         </picture>
+ *       <div>
+ *       <div class="info-div">
+ *         <div>&#8227 {{published-at}}</div>
+ *         <div>&#8227 {{view-count}}</div>
+ *         <div>&#8227 {{like-count}}</div>
+ *         <div>&#8227 {{duration}}</div>
+ *       </div>
+ *       <div class="title-div">
+ *         <h3>{{title}}</h3>
+ *       </div>
+ *     </div>  
+ *   </template>
+ */
+
+.swipe-container .video-swiper-rahmen{
+  position: relative;
+  width: 240px;
+  margin: 0 0 15px 10px;
+  flex: 0 0 240px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.swipe-container .video-swiper-rahmen .thumbnail-div{
+  width: 240px;
+  flex: 0 0 240px;
+}
+.swipe-container .video-swiper-rahmen .thumbnail-div img{
+  width: 240px;
+  flex: 0 0 240px;
+  height: auto;
+}
+.swipe-container .video-swiper-rahmen .info-div{
+  width: 240px;
+  flex: 0 0 240px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.swipe-container .video-swiper-rahmen .info-div *{
+  margin-left: 10px;
+}
+.swipe-container .video-swiper-rahmen .duration{
+  position: absolute;
+  right: 25px;
+  top: 100px;
+  background: black;
+  color: white;
+}
+.swipe-container .video-swiper-rahmen .duration,
+.swipe-container .video-swiper-rahmen .published-at,
+.swipe-container .video-swiper-rahmen .view-count,
+.swipe-container .video-swiper-rahmen .like-count{
+  font-size: 0.85rem;
+}
+.swipe-container .video-swiper-rahmen .title-div{
+  width: 240px;
+  flex: 0 0 240px;
+}
+.swipe-container .video-swiper-rahmen h5{
+  width: 240px;
+  flex: 0 0 240px;
+  padding: 0px 0px 7px 0px;
+}
+
+
+
+
+.category-swipe-container{
+    background-color: white;
+    width: 100%;
+    overflow-y: auto;
+    /*Eigenschaften fuer die Kinder*/
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.category-swipe-container .video-swiper-rahmen{
+  width: 240px;
+  margin: 0 0 15px 10px;
+  flex: 0 0 240px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.category-swipe-container .video-swiper-rahmen .thumbnail-div{
+  width: 240px;
+  flex: 0 0 240px;
+}
+.category-swipe-container .video-swiper-rahmen .thumbnail-div img{
+  width: 240px;
+  flex: 0 0 240px;
+  height:auto;
+}
+.category-swipe-container .video-swiper-rahmen .info-div{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.category-swipe-container .video-swiper-rahmen .title-div{
+  width: 190px;
+  flex: 0 0 190px;
+  padding: 0px 5px 0px 5px;
+}
+.category-swipe-container .video-swiper-rahmen .info-div *{
+  font-size: 0.85rem;
+}
+
+
+.swipe-container-all .video-swiper-rahmen{
+  width: 100%;
+  padding: 3px 5px 7px 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.swipe-container-all .video-swiper-rahmen .thumbnail-div{
+  order: 3;
+  width: 160px;
+  flex: 0 0 160px;
+}
+.swipe-container-all .video-swiper-rahmen .thumbnail-div img{
+  width: 160px;
+  flex: 0 0 160px;
+  height:auto;
+}
+.swipe-container-all .video-swiper-rahmen .duration-div{
+  width: 160px;
+  position: relative;
+}
+.swipe-container-all .video-swiper-rahmen .duration{
+  position: absolute;
+  right: 15px;
+  top: 80px;
+  background: black;
+  color: white;
+  order: 2;
+  font-size: 0.85rem;
+}
+.swipe-container-all .video-swiper-rahmen .published-at{
+  padding: 0 0 3px 0;
+  width:100%;
+  order: 1;
+  font-size: 0.85rem;
+}
+.swipe-container-all .video-swiper-rahmen .view-count{
+  font-size: 0.85rem;
+}
+.swipe-container-all .video-swiper-rahmen .like-count{
+  font-size: 0.85rem;
+}
+.swipe-container-all .video-swiper-rahmen .title-div{
+  order: 4;
+  padding: 0 0 0 5px;
+  width: calc(100% - 160px);
+}
+.swipe-container-all .video-swiper-rahmen .info-div{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.swipe-container-all .video-swiper-rahmen .info-div div:first-child{
+  margin-right: 10px;
+}
+
+/*************************************************/
+/*        die Single-Page-unsichtbar-machen      */
+/*************************************************/
+
+.invisible{
+  display: none;
+}
+
+/*************************************************/
+/*        DER SPINNER                            */
+/*************************************************/
+
+.loader {
+    z-index: 11;
+    /*border: 16px solid #f3f3f3; /* Light grey */
+    /*border-top: 16px solid #3498db; /* Blue */
+    border-radius: 100%;
+    width: 280px;
+    height: 280px;
+    background: url(./img/spinner.svg);
+    background-size: contain;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    left: calc(50% - 140px);
+    top: calc(50% - 140px);
+        will-change: transform; /*erklaert dem browser, dass er sich auf ein transformen des Headers vorbereiten soll
+        -webkit-transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+                transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+                transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+                transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s, -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;*/
+}
+
+@keyframes spin {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+
+/************************************************************/
+/*  ERSTMAL KEINE besonderen Media Queries max-width: 30rem */
+/************************************************************/
+@media (max-width: 45rem) and (orientation:landscape){ 
+  #single-playlist-container.invisible{
+    display: block;
+  }
+  
+  #main-menu, #favoriten-container, #tinder-container, #categories-container, #loader{
+    display: none;
+  }
+  #single-video-infos-div,#single-playlist-content,#single-playlist-related-playlists,#single-playlist-last-updated-playlists{
+    display: none;
+  }
+  .main-content{
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+  #single-playlist-container,#single-video-content{
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+  #videoFrame{
+    z-index: 100;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
