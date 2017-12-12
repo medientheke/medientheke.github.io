@@ -785,14 +785,13 @@ html, body{
 /* Categories-Container mit unterreiter(Community/rbtv) anordnen */
 /*****************************************************************/
 
-#categories-container{
+#categories-container-top-menu{
+  width: 100vw;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-around;
 }
 #categories-container-rbtv-buttons-div{
   width: 100vw;
-  flex-shrink: 1;
   display: flex;
   justify-content: space-around;
 }
