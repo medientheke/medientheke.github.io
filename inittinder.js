@@ -12,7 +12,7 @@ var singlePlaylistId=""; //in single-playlist-page. zum Erkennen, ob schon nach 
 var isFavoritePageInitialized=false;
 var isSinglePlaylistPageInitialized=false;
 var isTinderPageInitialized=false;
-var isCategoriesPageInitialized=false;
+var isCategoriesPageInitialized=[];
 
 /*****************************************/
 /*     Tinder initieren                  */
@@ -20,6 +20,7 @@ var isCategoriesPageInitialized=false;
 
 async function initTinder(){
   activateMainMenuButtons();
+  activateCategoryPageButtons();
   window.cookieconsent.initialise({
     "palette": {
       "popup": {
@@ -111,6 +112,23 @@ function activateMainMenuButtons(){
     window.location.hash = 'properties/';
   });
 }
+function activateCategoryPageButtons(){
+  document.getElementById('category-button-rbtv').addEventListener('click',function(){
+    window.location.hash = 'kategorien/';
+  });
+  document.getElementById('category-button-community').addEventListener('click',function(){
+    window.location.hash = 'kategorien/community';
+  });
+  document.getElementById('category-button-gaming').addEventListener('click',function(){
+    window.location.hash = 'kategorien/gaming';
+  });
+  document.getElementById('category-button-non-gaming').addEventListener('click',function(){
+    window.location.hash = 'kategorien/non-gaming';
+  });
+
+}
+
+
 
 /****************************************************/
 /*   ********************************************   */
@@ -165,7 +183,8 @@ function render(url) {
           },
       // The Categories Page.
       '#kategorien': function() {
-            renderCategoriesPage();
+            var categoryTheme = url.split('#kategorien/')[1].trim();
+            renderCategoriesPage(categoryTheme);
           },
       //Single Playlist PAGE.
       '#format': function() {
@@ -270,16 +289,42 @@ function renderTinderPage(){
 /*             render Categories-Page           */
 /************************************************/
 
-function renderCategoriesPage(){
-  if(isCategoriesPageInitialized===false){
-    initCategories();
-    isCategoriesPageInitialized=true;
+function renderCategoriesPage(categoryTheme){
+  document.getElementById("categories-container-rbtv").classList.add("invisible");
+  document.getElementById("categories-container-rbtv-gaming").classList.add("invisible");
+  document.getElementById("categories-container-rbtv-non-gaming").classList.add("invisible");
+  document.getElementById("categories-container-community").classList.add("invisible");
+  if(categoryTheme==="gaming"){
+    document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    subCategoryTheme=["gaming"];
+    subCategoryTitle="gaming";
+    var categoriesContainer = document.getElementById("categories-container-rbtv-gaming");
+  }else if(categoryTheme==="non-gaming"){
+    document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    subCategoryTheme=["non-gaming"];
+    subCategoryTitle="non-gaming";
+    var categoriesContainer = document.getElementById("categories-container-rbtv-non-gaming");
+  }else if(categoryTheme==="community"){
+    document.getElementById("categories-container-community").classList.remove("invisible");
+    subCategoryTheme=["community"];
+    subCategoryTitle="community";
+    var categoriesContainer = document.getElementById("categories-container-community-all");
+  }else{
+    subCategoryTheme = ["lastUpdate","publishedAt","notCategorised"];
+    subCategoryTitle="last-update";
+    document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    var categoriesContainer = document.getElementById("categories-container-rbtv-last-update");
+  }
+  if(!isCategoriesPageInitialized.includes(subCategoryTitle)){
+    initCategories(subCategoryTheme,categoriesContainer);
+    isCategoriesPageInitialized.push(subCategoryTitle);
   }
   //document.getElementById("favoriten-container").style.display="none";
   //document.getElementById("single-playlist-container").style.display="none";
   //document.getElementById("tinder-container").style.display="none";
   //document.getElementById("categories-container").style.display="initial";
   document.getElementById("categories-container").classList.remove("invisible");
+  categoriesContainer.classList.remove("invisible");
   document.getElementById("loader").classList.add("invisible");
 }
 
@@ -647,26 +692,23 @@ async function addToTinderSwiper(videoId,thumbnail,title,description,erstelltAm,
 /*   ********************************************   */
 /****************************************************/
 
-function initCategories(){
-  var categoriesContainer = document.getElementById("categories-container");
-  
-  var categories = getCategories("related");
+function initCategories(subCategoryTheme,categoriesContainer){
+  var categories = getCategories("related",subCategoryTheme);
   categories.forEach(function(category){
-
     var template = document.getElementById("swipe-container-nav-template");
     var clone = document.importNode(template.content, true);
     //die Infos hinzufuegen
     clone.querySelector('h3').innerHTML=category.categoryName;
-    // Neue Zeile (row) klonen und in die Tabelle einf�gen
+    // Neue Zeile (row) klonen und in die Tabelle einfuegen
     categoriesContainer.appendChild(clone);
-  
+
     var categoryDiv = document.createElement('div');
     categoryDiv.setAttribute("class","category-swipe-container");
     categoriesContainer.appendChild(categoryDiv);
-    
+
     //var categorySwiper = new CategorySwiper(categoryDiv);
     //categorySwiper.run();
-    
+
     category.categoryItems.forEach(function(item){
       addToCategoryTemplate(item,categoryDiv);
       //categorySwiper.addVorschlag(item.id,item.thumbnails.medium.url,item.title,item.itemCount,item.channelTitle,item);
