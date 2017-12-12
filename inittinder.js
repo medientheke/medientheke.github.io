@@ -296,11 +296,15 @@ function renderCategoriesPage(categoryTheme){
   document.getElementById("categories-container-community").classList.add("invisible");
   if(categoryTheme==="gaming"){
     document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    document.getElementById("category-button-gaming").classList.add("category-bottom-active");
+    document.getElementById("category-button-non-gaming").classList.remove("category-bottom-active");
     subCategoryTheme=["gaming"];
     subCategoryTitle="gaming";
     var categoriesContainer = document.getElementById("categories-container-rbtv-gaming");
   }else if(categoryTheme==="non-gaming"){
     document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    document.getElementById("category-button-non-gaming").classList.add("category-bottom-active");
+    document.getElementById("category-button-gaming").classList.remove("category-bottom-active");
     subCategoryTheme=["non-gaming"];
     subCategoryTitle="non-gaming";
     var categoriesContainer = document.getElementById("categories-container-rbtv-non-gaming");
@@ -310,9 +314,11 @@ function renderCategoriesPage(categoryTheme){
     subCategoryTitle="community";
     var categoriesContainer = document.getElementById("categories-container-community-all");
   }else{
+    document.getElementById("categories-container-rbtv").classList.remove("invisible");
+    document.getElementById("category-button-non-gaming").classList.remove("category-bottom-active");
+    document.getElementById("category-button-gaming").classList.remove("category-bottom-active");
     subCategoryTheme = ["lastUpdate","publishedAt","notCategorised"];
     subCategoryTitle="last-update";
-    document.getElementById("categories-container-rbtv").classList.remove("invisible");
     var categoriesContainer = document.getElementById("categories-container-rbtv-last-update");
   }
   if(!isCategoriesPageInitialized.includes(subCategoryTitle)){
