@@ -133,12 +133,12 @@ li{
       /*-webkit-transition: opacity 0.333s cubic-bezier(0,0,0.21,0); /* Safari */
       /*        transition: opacity 0.333s cubic-bezier(0,0,0.21,0);*/
   text-indent: -30000px; /*Text-intent gibt den Einzug vom Test in der ersten Zeile an*/
-  /*�berstehender Text vom Button wird nicht angezeigt*/
+  /*ueberstehender Text vom Button wird nicht angezeigt*/
     overflow: hidden;
   /*wir entfernen die Standardwerte des Buttons*/
     border: none;
     outline: none;
-  /*damit der Mauszeiger zu einer Hand wird beim r�bergehen*/
+  /*damit der Mauszeiger zu einer Hand wird beim ruebergehen*/
     cursor: pointer;
 }
 
@@ -780,6 +780,28 @@ html, body{
 .swipe-container-all .video-swiper-rahmen .info-div div:first-child{
   margin-right: 10px;
 }
+
+/*****************************************************************/
+/* Categories-Container mit unterreiter(Community/rbtv) anordnen */
+/*****************************************************************/
+
+#categories-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+#categories-container-rbtv-buttons-div{
+  width: 100vw;
+  flex-shrink: 1;
+  display: flex;
+  justify-content: space-around;
+}
+#categories-container-rbtv, #categories-container-community, #categories-container-rbtv-last-update{
+  max-width: 100%;
+  overflow: hidden;
+}
+
+
 
 /*************************************************/
 /*        die Single-Page-unsichtbar-machen      */
