@@ -11,6 +11,8 @@ var p;
 var singlePlaylistId=""; //in single-playlist-page. zum Erkennen, ob schon nach den playlistItems gesucht wurde oder nicht
 var isFavoritePageInitialized=false;
 var isSinglePlaylistPageInitialized=false;
+var notTinderedPlaylists=[];
+var notTinderedPlaylistIndex=0;
 var isTinderPageInitialized=false;
 var isCategoriesPageInitialized=[];
 
@@ -176,9 +178,6 @@ function render(url) {
           },
       // The Tinder Page.
       '#tinder': function() {
-            //// Clear the filters object, uncheck all checkboxes, show all the products
-            //filters = {};
-            //checkboxes.prop('checked',false);
             renderTinderPage();
           },
       // The Categories Page.
@@ -262,25 +261,61 @@ function removeAllFavorites(){
 /*             render Tinder-Page               */
 /************************************************/
 
-function renderTinderPage(){
+async function renderTinderPage(){
   document.getElementById("loader").classList.remove("invisible");
   document.getElementById("favoriten-container").classList.add("invisible");
   document.getElementById("single-playlist-container").classList.add("invisible");
   document.getElementById("tinder-container").classList.add("invisible");
   document.getElementById("categories-container").classList.add("invisible");
+
+  var tinderablePlaylists = getPlaylists("id",1);
+  //alert(tinderablePlaylists.length);
+  //Tinder-Datenbank: TinderedPlaylists
+  //TinderedPlaylist={
+  //                 playlistId = String;
+  //                 TinderStatus \in {like, dislike, aufgeschoben}
+  //                 };
   if(isTinderPageInitialized===false){
-    //fuer die Tinder-Page
-    //var playlists = getPlaylists("tinderPosition",-1);
-    var playlists = getPlaylists("lastUpdate",-1);
-    for(var i in playlists){
-      addToTinderSwiper(playlists[i].id,playlists[i].thumbnails,playlists[i].title,playlists[i].description,playlists[i].publishedAt,playlists[i].lastUpdate,playlists[i].itemCount);
+    let tinderedPlaylists = await getTinderedPlaylistsById();
+    //alert("Laenge="+tinderedPlaylists.length);
+    //let tinderedPlaylists = [];
+    //wir bestimmen die noch nicht getinderten Playlists:
+    notTinderedPlaylists = [];
+    let i=0;
+    let j=0;
+    //alert("00");
+    while (i<tinderedPlaylists.length){
+      //alert(tinderedPlaylists[0]);
+      //alert("i="+i+",j="+j);
+      if(j>=tinderablePlaylists.length){
+        break;
+      }
+      if(tinderedPlaylists[i]>tinderablePlaylists[j].id){
+        alert(tinderedPlaylists[i]+" > "+tinderablePlaylists[j].id);
+        notTinderedPlaylists.push(tinderablePlaylists[j]);
+        j=j+1;
+      }else if(tinderedPlaylists[i]===tinderablePlaylists[j].id){
+        alert(tinderedPlaylists[i]+" = "+tinderablePlaylists[j].id);
+        j=j+1;
+        i=i+1;
+      }else{ //dh. tinderedPlaylists[i]>tinderablePlaylists[j].id
+        alert(tinderedPlaylists[i]+" < "+tinderablePlaylists[j].id);
+        i=i+1;
+      }
     }
+    //alert("j="+j);
+    //alert(tinderablePlaylists[j].title);
+    for(let l=j;l<tinderablePlaylists.length;l++){
+      notTinderedPlaylists.push(tinderablePlaylists[l]);
+    }
+    //alert(notTinderedPlaylists.length);
+    notTinderedPlaylists.sort(function(a,b){return(a["tinderPosition"]>b["tinderPosition"])? 1 :((b["tinderPosition"]>a["tinderPosition"])? -1 :0);});
+
+    //alert(notTinderedPlaylists[0].title);
+    addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
     isTinderPageInitialized=true;
   }
-  //document.getElementById("favoriten-container").style.display="none";
-  //document.getElementById("single-playlist-container").style.display="none";
-  //document.getElementById("tinder-container").style.display="initial";
-  //document.getElementById("categories-container").style.display="none";
+
   document.getElementById("tinder-container").classList.remove("invisible");
   document.getElementById("loader").classList.add("invisible");
 }
@@ -619,7 +654,7 @@ async function addToFavoritePage(videoId,thumbnail,title,description,erstelltAm,
   //clone.querySelector('.video-count').innerHTML= (videoCount===1) ? "1 Video, am "+publishedAt+"ver&oumlffentlicht" : (publishedAt===lastUpdate) ? videoCount+" Videos, am "+publishedAt+" ver&oumlffentlicht" : videoCount+" Videos, von "+publishedAt+" - "+lastUpdate+" aktiv" ;
   clone.querySelector('.video-count').innerHTML= (videoCount===1) ? "1 Video insgesamt" : (newVideoCount<videoCount&&newVideoCount>0) ? newVideoCount + " neu, " + videoCount +" Videos insgesamt" : videoCount+" Videos insgesamt" ;
   
-  //die EventListener hinzuf�gen
+  //die EventListener hinzufuegen
   clone.querySelector('img').addEventListener('click',function(){
     putVideoCount(videoId).then(function(){
       window.location.hash = 'format/' + videoId;
@@ -637,7 +672,7 @@ async function addToFavoritePage(videoId,thumbnail,title,description,erstelltAm,
       window.location.hash = 'format/' + videoId;
     });
   });
-  // Neue Zeile (row) klonen und in die Tabelle einf�gen
+  // Neue Zeile (row) klonen und in die Tabelle einfuegen
   var favoritesContainer = document.getElementById("favoriten-mit-neuen-folgen-container");
   favoritesContainer.appendChild(clone);
   console.log("ende");
@@ -667,8 +702,8 @@ async function addToTinderSwiper(videoId,thumbnail,title,description,erstelltAm,
   }else{
     clone.querySelector('source').setAttribute("srcset",thumbnail.medium.url+" 1x");
   }
-  clone.querySelector('img').setAttribute("src",thumbnail.medium.url);
-  clone.querySelector('img').setAttribute("alt","thumbnail von "+title);
+  clone.querySelector('.playlist-ids').setAttribute("src",thumbnail.medium.url);
+  clone.querySelector('.playlist-ids').setAttribute("alt","thumbnail von "+title);
   clone.querySelector('h3').innerHTML=title;
   //clone.querySelector('.published-at-div').innerHTML="&#8227 am "+erstelltAm.substring(8, 10)+"."+erstelltAm.substring(5, 7)+"."+erstelltAm.substring(0, 4)+" ver&oumlffentlicht";
   //clone.querySelector('.last-update-div').innerHTML="&#8227 am "+lastUpdate.substring(8, 10)+"."+lastUpdate.substring(5, 7)+"."+lastUpdate.substring(0, 4)+" zuletzt aktualisiert";
@@ -677,20 +712,243 @@ async function addToTinderSwiper(videoId,thumbnail,title,description,erstelltAm,
   var lastUpdate = lastUpdate.substring(8, 10)+"."+lastUpdate.substring(5, 7)+"."+lastUpdate.substring(0, 4);
   clone.querySelector('.video-count').innerHTML= (videoCount===1) ? "1 Video, am "+publishedAt+"ver&oumlffentlicht" : (publishedAt===lastUpdate) ? videoCount+" Videos, am "+publishedAt+"ver&oumlffentlicht" : videoCount+" Videos, von "+publishedAt+" - "+lastUpdate+" aktiv" ;
   
-  //die EventListener hinzuf�gen
-  clone.querySelector('img').addEventListener('click',function(){
+  //die EventListener hinzufuegen
+  clone.querySelector('.tinder-remark1').addEventListener('click',function(){
     window.location.hash = 'format/' + videoId;
-
+  });
+  clone.querySelector('.tinder-remark2').addEventListener('click',function(){
+    window.location.hash = 'format/' + videoId;
+  });
+  clone.querySelector('.tinder-remark3').addEventListener('click',function(){
+    window.location.hash = 'format/' + videoId;
+  });
+  clone.querySelector('.playlist-ids').addEventListener('click',function(){
+    window.location.hash = 'format/' + videoId;
   });
   clone.querySelector('button').addEventListener('click',function(){
     window.location.hash = 'format/' + videoId;
-
   });
-  // Neue Zeile (row) klonen und in die Tabelle einf�gen
+  // Neue Zeile (row) klonen und in die Tabelle einfuegen
   var tinderSwiper = document.getElementById("tinder-container");
   tinderSwiper.appendChild(clone);
+  //HIER KONSTRUKTOR STARTEN FUER DEN START DES SWIPERS
+  console.log(tinderSwiper.lastElementChild);
+  var tinderSwipe = new Swipe(tinderSwiper.lastElementChild.lastElementChild);
+
+  tinderSwipe.run();
   console.log("ende");
 }
+
+/****************************************************/
+/*            Tinder-Swiper                         */
+/****************************************************/
+
+class Swipe {
+/*  *  *  * DER KONSTRUKTOR *  *  *  *  *  *  *  */
+  constructor(element) {
+        this.xDown = null; this.yDown = null;
+        this.xMove = null; this.yMove = null;
+        this.touchStart = null; this.touchStartTime = null; this.swipe = null;
+        this.element = (typeof(element) === 'string') ? document.querySelector(element) : element;
+        this.elementLeft = this.element.offsetLeft;
+        this.elementTop = this.element.offsetTop;
+  }
+/*  *  *  * WEITERE SWIPE-OPERATIONEN BINDEN *  *  *  *  *  *  *  */
+  onLeft(callback) {this.onLeft = callback; return this;}
+  onRight(callback) {this.onRight = callback; return this;}
+  onUp(callback) {this.onUp = callback; return this;}
+  onDown(callback) {this.onDown = callback; return this;}
+/*  *  *  * TOUCHSTART-HANDLER *  *  *  *  *  *  *  */
+  handleTouchStart(evt) {
+    this.xDown = evt.touches[0].clientX; this.yDown = evt.touches[0].clientY; //Set values.
+    this.touchStart = true; this.touchStartTime = Date.now(); //Set values.
+    //alert(this.touchStart);
+  }
+/*  *  *  * TOUCHMOVE-HANDLER *  *  *  *  *  *  *  */
+  handleTouchMove(evt) {
+    this.xMove = evt.changedTouches.item(0).clientX; this.yMove = evt.changedTouches[0].clientY; //Set values.
+    if(this.touchStart === true &&  Math.abs(this.xDown - this.xMove) != 0){ // Most significant.
+      this.swipe = true;
+    }
+    if(this.swipe === true){
+      evt.preventDefault();
+      this.element.style.transitionDuration="0s";
+      //this.infos.style.transitionDuration="0s";
+      this.element.style.left = this.elementLeft-this.xDown+this.xMove+"px";
+      //this.element.style.top = -this.yDown+this.yMove+"px";
+      this.element.style.top = this.elementTop-this.yDown+this.yMove+"px";
+      //alert(this.element.style.left);
+      if (Math.abs(-this.yDown+this.yMove)>Math.abs(-this.xDown+this.xMove)){
+        document.querySelector('.tinder-remark1').style.opacity = -2*(-this.yDown+this.yMove)/this.element.offsetHeight;
+        document.querySelector('.tinder-remark2').style.opacity = 0;
+        document.querySelector('.tinder-remark3').style.opacity = 0;
+      }else{
+        document.querySelector('.tinder-remark1').style.opacity = 0;
+        document.querySelector('.tinder-remark2').style.opacity = -2*(-this.xDown+this.xMove)/this.element.offsetWidth;
+        document.querySelector('.tinder-remark3').style.opacity = 2*(-this.xDown+this.xMove)/this.element.offsetWidth;
+      }
+    }
+    this.touchStart = false; //Reset values.
+  }
+/*  *  *  * TOUCHEND-HANDLER *  *  *  *  *  *  *  */
+  handleTouchEnd(evt) {
+    if(this.swipe === true){
+      this.touchEndTime = Date.now();
+      this.element.style.transitionDuration="0.3s";
+      var xl = this.element.offsetWidth;
+      var yl = this.element.offsetHeight;
+      //var li = this.infos.firstElementChild.offsetWidth;
+      var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
+      var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
+      //var y = this.infosLeft+Math.round((-this.xDown+this.xMove)/lt)*this.infos.firstElementChild.offsetWidth;
+      //var rest = (this.elementLeft%xl>=0) ? this.elementLeft%xl : this.elementLeft%xl+xl;
+      if(Math.abs(-this.xDown+this.xMove)>=Math.abs(-this.yDown+this.yMove)){ //dh. zur Seite geswipet
+        if( (Math.round((-this.xDown+this.xMove)/xl)>=1) || (this.xMove-this.xDown)/(this.touchEndTime-this.touchStartTime)>xl/1000 /*&& this.elementLeft+xl<=rest*/){
+          this.element.style.left = this.elementLeft+xl+"px"; this.elementLeft = this.elementLeft+xl;
+          //HIER LIKEN
+          //alert(this.element.className);
+          addFavorite(this.element.className);
+          addTinderedPlaylist(this.element.className,"like");
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+            notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
+            addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
+          },300,this.element);
+        }else if( (Math.round((-this.xDown+this.xMove)/xl)<=-1) || (this.xMove-this.xDown)/(this.touchEndTime-this.touchStartTime)<-xl/1000 /*&& this.elementLeft-xl>-(this.element.children.length-1)*xl*/){
+          this.element.style.left = this.elementLeft-xl+"px"; this.elementLeft = this.elementLeft-xl;
+          //HIER DISLIKEN
+          //alert(this.element.className);
+          addTinderedPlaylist(this.element.className,"dislike");
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+            notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
+            addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
+          },300,this.element);
+        }else{ //dh. Math.round((-this.xDown+this.xMove)/xl)===0 && Swipe-Geschindigkeit in x-Richtung = klein
+          this.element.style.left = x+"px"; //this.elementLeft = x;
+          this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          document.querySelector('.tinder-remark1').style.opacity = 0;
+          document.querySelector('.tinder-remark2').style.opacity = 0;
+          document.querySelector('.tinder-remark3').style.opacity = 0;
+          //HIER IST ALLES ZURUECK AUF ANFANG
+        }
+      }else{ //dh. eher nach oben geschoben
+        if( (Math.round((-this.yDown+this.yMove)/yl)<0) || (Math.round((-this.yDown+this.yMove)/yl)===0) && (this.yMove-this.yDown)/(this.touchEndTime-this.touchStartTime)<-yl/1000 /*&& this.elementLeft-yl>-(this.element.children.length-1)*yl*/ ){
+          this.element.style.left = x+"px"; //this.elementLeft = x;
+          //this.element.style.top = -this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+          this.element.style.top = this.elementTop-this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+          //HIER AUFGESCHOBEN
+          //alert(this.element.className);
+          addTinderedPlaylist(this.element.className,"aufgeschoben");
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+            notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
+            addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
+          },300,this.element);
+        }else{
+          this.element.style.left = x+"px"; //this.elementLeft = x;
+          //this.element.style.top = "0px"; //this.elementTop = this.elementTop;
+          this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          document.querySelector('.tinder-remark1').style.opacity = 0;
+          document.querySelector('.tinder-remark2').style.opacity = 0;
+          document.querySelector('.tinder-remark3').style.opacity = 0;
+          //HIER IST ALLES ZURUECK AUF ANFANG
+        }
+
+      }
+    }
+    this.xDown = null; this.yDown = null; this.xMove = null; this.yMove = null; //Reset values.
+    this.swipe = null; this.touchStart = null; //Reset values.
+  }
+/*  *  *  * CLICK-HANDLER *  *  *  *  *  *  *  */
+  async handleClick(evt){
+    //click auf den Rand zum swipen
+    //var rest = (this.thumbnailsLeft%lt>=0) ? this.thumbnailsLeft%lt : this.thumbnailsLeft%lt+lt;
+    //if(evt.clientX<rest){
+    //  if(this.infosLeft<0){ //hier müssen die Randbedingungen noch angepasst werden
+    //    this.thumbnails.style.transitionDuration="0.5s"; this.infos.style.transitionDuration="0.5s";
+    //    this.thumbnails.style.left = this.thumbnailsLeft+lt+"px"; this.infos.style.left = this.infosLeft+this.infos.firstElementChild.offsetWidth+"px";
+    //    this.thumbnailsLeft = this.thumbnailsLeft+lt; this.infosLeft = this.infosLeft+this.infos.firstElementChild.offsetWidth;
+    //  }
+    //}else if (evt.clientX>this.element.offsetWidth+rest-this.element.offsetWidth%lt){
+    //  if(this.infosLeft+(this.infos.children.length-1)*this.infos.firstElementChild.offsetWidth>0){
+    //    this.thumbnails.style.transitionDuration="0.5s"; this.infos.style.transitionDuration="0.5s";
+    //    this.thumbnails.style.left = this.thumbnailsLeft-lt+"px"; this.infos.style.left = this.infosLeft-this.infos.firstElementChild.offsetWidth+"px";
+    //    this.thumbnailsLeft = this.thumbnailsLeft-lt; this.infosLeft = this.infosLeft-this.infos.firstElementChild.offsetWidth;
+    //  }
+    //}
+    //click auf das Thumbnail zum swipen
+/*    var lt = this.thumbnails.firstElementChild.offsetWidth;
+    var rest = (this.thumbnailsLeft%lt>=0) ? this.thumbnailsLeft%lt : this.thumbnailsLeft%lt+lt;
+    if(evt.clientX<rest && (evt.target.tagName.toLowerCase()==='img' || evt.target.className==='thumbnail')){
+      if(this.infosLeft<0){
+      //if(this.thumbnailsLeft+evt.target.offsetLeft<0){
+        this.thumbnails.style.transitionDuration="0.5s"; this.infos.style.transitionDuration="0.5s";
+        this.thumbnails.style.left = this.thumbnailsLeft+lt+"px"; this.infos.style.left = this.infosLeft+this.infos.firstElementChild.offsetWidth+"px";
+        this.thumbnailsLeft = this.thumbnailsLeft+lt; this.infosLeft = this.infosLeft+this.infos.firstElementChild.offsetWidth;
+      }
+    }
+    else if( evt.clientX>this.element.offsetWidth+rest-this.element.offsetWidth%lt && (evt.target.tagName.toLowerCase()==='img' || evt.target.className==='thumbnail')){
+      if(this.infosLeft+(this.infos.children.length-1)*this.infos.firstElementChild.offsetWidth>0){
+      //if(this.thumbnailsLeft+evt.target.offsetLeft+evt.target.offsetWidth>=this.element.offsetWidth){
+        this.thumbnails.style.transitionDuration="0.5s"; this.infos.style.transitionDuration="0.5s";
+        this.thumbnails.style.left = this.thumbnailsLeft-lt+"px"; this.infos.style.left = this.infosLeft-this.infos.firstElementChild.offsetWidth+"px";
+        this.thumbnailsLeft = this.thumbnailsLeft-lt; this.infosLeft = this.infosLeft-this.infos.firstElementChild.offsetWidth;
+      }
+    }
+    //click auf das Thumbnail zum Anschauen UND Click auf mehr-anzeigen-Button
+    else if( (evt.target.tagName.toLowerCase()==='img' && this.thumbnailsLeft+evt.target.offsetLeft>=0 && this.thumbnailsLeft+evt.target.offsetLeft+evt.target.offsetWidth<this.element.offsetWidth) || (evt.target.tagName.toLowerCase()==='button' && evt.target.className==="mehr")){
+      var id = ( evt.target.tagName.toLowerCase()==='img' ) ? evt.target.className : evt.target.name;
+      localStorage.setItem('format',id);
+      var db = await connectToDB(dbName,version);
+      var trans = db.transaction(["favoriten"],"readwrite");
+      var objectStore = trans.objectStore("favoriten");
+      objectStore.get(id).onsuccess = function(event) {
+        if(event.target.result!=undefined){
+          var data = event.target.result;
+          data.favWatchDate = Date.now(),
+          data.favLastWatchedVideoIndex = data.favVideoCount;
+          //Put this updated object back into the database.
+          objectStore.put(data).onsuccess = function(event) {
+            //Success - the data is updated!
+            console.log("Success - the data is updated!");
+          };
+        }
+      };
+      trans.oncomplete = function(event){
+        window.location = "video.html"
+        db.close();
+      };
+    }
+    // Click auf add/remove-fav-Button
+    else if(evt.target.tagName.toLowerCase()==='button' && (evt.target.className==="add-to-fav" || evt.target.className==="add-to-fav remove-from-fav") ){
+      if(evt.target.className==="add-to-fav"){ add(evt.target.name); }
+      else{ remove(evt.target.name); }
+      //Aendere alle add-to-fav-Button mit selben Namen
+      var ButtonsWithNameOfTarget=document.getElementsByName(evt.target.name);
+      for (var i=0;i<ButtonsWithNameOfTarget.length;i++){
+        ButtonsWithNameOfTarget[i].classList.toggle("remove-from-fav");
+      }
+    }
+*/
+  }
+/*  *  *  * DIE RUN-METHODE *  *  *  *  *  *  *  */
+  run() {
+    this.element.addEventListener('touchstart', function(evt) {
+      this.handleTouchStart(evt).bind(this);
+    }.bind(this), false);
+    this.element.addEventListener('touchmove', function(evt) {
+      this.handleTouchMove(evt).bind(this);
+    }.bind(this),false);
+    this.element.addEventListener('touchend', function(evt) {
+      this.handleTouchEnd(evt).bind(this);
+    }.bind(this),false);
+    this.element.addEventListener('click', function(evt) {
+      this.handleClick(evt);
+    }.bind(this),false);
+  }
+}
+
 
 /****************************************************/
 /*   ********************************************   */
@@ -1079,7 +1337,7 @@ var singlePlaylistNavProperties = {
 
     clone.querySelector('h5').innerHTML=item.title;
   
-    //die EventListener hinzuf�gen
+    //die EventListener hinzufuegen
     clone.querySelector('.thumbnail-div').addEventListener('click',function(){window.location.hash = 'format/'+item.id});
     clone.querySelector('.title-div').addEventListener('click',function(){window.location.hash = 'format/'+item.id});
     // Neue Zeile (row) klonen und in die Tabelle einf�gen
@@ -1392,7 +1650,7 @@ var current_view_pub_key;
  *         channelTitle: string,
  *            viewCount: "int",
  *            likeCount: "int",
- *         dislikeCount: "int",      
+ *         dislikeCount: "int",
  *          publishedAt: "date",
  *             duration: "time"      };
  */
@@ -1463,7 +1721,7 @@ var onupgradeneeded = function(event){
 };
 
 // 2  *  *  * Anfragen an die datenbank funktionieren dann so: *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-// 2.1*  *  * hole Favoriten-Funktionen *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
+// 2.1*  *  * hole Favoriten-Funktionen *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
 async function get(id){
   var db = await connectToDB(dbName,version);
@@ -1527,7 +1785,7 @@ async function getSome(count,index,direction){
       var folgen = new Array();
       console.log("getAll3 "+index);
       db.transaction("alleFolgen").objectStore("alleFolgen").index("position").openCursor(null,direction).onsuccess = function(event) {
-        var cursor = event.target.result;      
+        var cursor = event.target.result;
         console.log("CURSOR "+cursor);
         if (cursor && folgen.length < count) {
           folgen.push(cursor.value);
@@ -1545,7 +1803,7 @@ async function getSome(count,index,direction){
 async function getAll(index,direction) {
   if(direction===undefined){
     direction="next";
-  } 
+  }
   console.log("getAll "+index);
   var db = await connectToDB(dbName,version);
   if(index==="viewCount" || index==="likeCount" || index==="position" || index==="publishedAt" ){
@@ -1554,7 +1812,7 @@ async function getAll(index,direction) {
       var folgen = new Array();
       console.log("getAll3 "+index);
       db.transaction("alleFolgen").objectStore("alleFolgen").index(index).openCursor(null,direction).onsuccess = function(event) {
-        var cursor = event.target.result;      
+        var cursor = event.target.result;
         console.log("CURSOR "+cursor);
         if (cursor) {
           folgen.push(cursor.value);
@@ -1571,7 +1829,7 @@ async function getAll(index,direction) {
       var folgen = new Array();
       console.log("getAll3 "+index);
       db.transaction("alleFolgen").objectStore("alleFolgen").openCursor().onsuccess = function(event) {
-        var cursor = event.target.result;      
+        var cursor = event.target.result;
         console.log("CURSOR "+cursor);
         if (cursor) {
           folgen.push(cursor.value);
@@ -1635,10 +1893,10 @@ async function add(id,title,position,description,thumbnails,channelTitle,viewCou
       resolve(evt);
     };
   });
-  
+
   //return new Promise(function(resolve,reject){
   //  trans.onsuccess = function(event){
-  //    
+  //
   //  };
   //
 }
@@ -1939,6 +2197,133 @@ function addFav(arrayOfObjOfFavData){
   }
 }
 
+//************************************************//
+//*  DAS MEDIATHEK-OBJEKT der Tindered-Playlists *//
+//************************************************//
+
+//Tinder-Datenbank: TinderedPlaylists
+//var tinderedPlaylists=[tinderedPlaylist1,...,tinderedPlaylistn];
+//var tinderedPlaylist1={ playlistId: "String";
+//                        tinderStatus: like, dislike oder aufgeschoben}  };
+
+
+const dbName3 = "Tinder";
+const version3 = 1;
+
+// 1  *  *  * lade die Tinder-datenbank "db". *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+function connectToTinderDB(dbName, version) {
+  //alert("connectToDB");
+  return new Promise(function(resolve, reject){
+    // 1.1  * Let us open our database *  *  *  *  *  *  *  *  *  *
+    const dbOpenRequest = window.indexedDB.open(dbName, version);
+    // 1.2  * version-change needed, while other tabs opened: request.onblocked = () => console.warn('pending till unblocked'); *  *  *  *  *  *  *  *  *  *
+    dbOpenRequest.onblocked = function(event) {
+      //If some other tab is loaded with the database, then it needs to be closed before we can proceed.
+      alert("Please close all other tabs with this site open!");
+      console.warn('pending till unblocked');
+    };
+    // 1.3  * Fehlerbehandlung: request.onerror = () => reject(request.error); *  *  *  *  *  *  *  *  *  *
+    dbOpenRequest.onerror = function(event) {
+      // Handle errors.
+      alert("Database error: " + event.target.errorCode);
+      reject(dbOpenRequest.error);
+    };
+    // 1.4  * Ersteinrichtung der Datenbank/Updates: dbOpenRequest.onupgradeneeded = onupgradeneeded; *  *  *  *  *  *  *  *  *  *
+    dbOpenRequest.onupgradeneeded = tinderOnupgradeneeded;
+    // 1.5  * jetzt wird die Datenbank zurueckgegeben: dbOpenRequest.onsuccess = () => resolve(request.result); *  *  *  *  *  *  *  *  *  *
+    dbOpenRequest.onsuccess = function(event) {
+      //console.log("Database initialised");
+      //store the result of opening the database in the db variable. This is used a lot below
+      //Better use "this" than "dbOpenRequest" to get the result to avoid problems with garbage collection.
+      //statt db = dbOpenRequest.result; lieber
+      //alert("open db DONE");
+      resolve(this.result);
+      //console.log("open db DONE");
+    };
+  });
+};
+
+//zu 1.4 *  * initialisierung der ersten Datenbankgestalt/Updates *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+var tinderOnupgradeneeded = function(event){
+  console.log("openDb.onupgradeneeded");
+  //1.4.1*  * All other databases have been closed. Set everything up. (erstmal nur das Datenbankger�st bauen) *  *  *  *  *  *  *  *  *  *
+  var db = event.target.result;
+  //1.4.2*  * Create an objectStore to hold information about our favorites. Wir nutzen "fanId" als key path weil es eindeutig ist *  *  *  *  *  *  *  *  *  *
+  var objectStore = db.createObjectStore("tinderedPlaylists", { keyPath: "playlistId" });
+  //1.4.3*  * Create an index to search Favorites by title. We may have duplicates so we can't use a unique index. *  *  *  *  *  *  *  *  *  *
+  objectStore.createIndex("tinderStatus", "tinderStatus", { unique: false });
+  //1.4.4*  * reload, wenn mehrere tabs offen *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+  // Make sure to add a handler to be notified if another page requests a version
+  // change. We must close the database. This allows the other page to upgrade the database.
+  // If you don't do this then the upgrade won't happen until the user closes the tab.
+  db.onversionchange = function(event) {
+    db.close();
+    alert("A new version of this page is ready. Please reload!");
+  };
+  //1.4.5*  * Do stuff with the database. (fuege initialdaten hinzu) *  *  *  *  *  *  *  *  *  *
+  //objectStore.transaction.oncomplete = function(event) {
+    //var tinderObjectStore = db.transaction("tinderedPlaylists", "readwrite").objectStore("tinderedPlaylists");
+  //};
+};
+
+// 2  *  *  * Anfragen an die datenbank funktionieren dann so: *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+//connectToDB(dbName,version).then(function(db){
+//  db.transaction .........
+//  und am Ende nicht db.close(); vergessen
+//});
+// 2.0.1 *  * mit try/catch/finally sieht das so in etwa aus: *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+//let db; //let=nicht globales var
+//try {
+//  connectToDB(dbName,version).then(function(db){
+//    db.transaction.....;
+//  });
+//} finally {
+//  if(db)
+//    db.close();
+//}
+
+
+// 2.1*  *  * hole Favoriten-Funktionen *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+
+async function getTinderedPlaylistsById() {
+  var db = await connectToTinderDB(dbName3,version3);
+  console.log("getTindereedPlaylistsById");
+  return new Promise(function(resolve, reject){
+    var tinderedIds = new Array();
+    console.log("getTindereedPlaylistsById2");
+    db.transaction("tinderedPlaylists").objectStore("tinderedPlaylists").openCursor().onsuccess = function(event) {
+    //db.transaction("tinderedPlaylists").objectStore("tinderedPlaylists").openCursor(null, "prev").onsuccess = function(event) {
+    //db.transaction("tinderedPlaylists").objectStore("tinderedPlaylists").index("playlistId").openKeyCursor(null, "prev").onsuccess = function(event) {
+      var cursor = event.target.result;
+      //alert(cursor.key);
+      //console.log(cursor);
+      if (cursor) {
+        tinderedIds.push(cursor.key);
+        cursor.continue();
+      }else{
+        //console.log("Got all favIds: " + favIds);
+        db.close();
+        alert("Hallo: "+tinderedIds[0]);
+        resolve(tinderedIds);
+      }
+    };
+  });
+}
+
+// 2.2*  *  * aktualisiere (put) Favoriten-Funktionen *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+// 2.3*  *  * remove from favoriten - function *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+// 2.4*  *  * adding functions *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+
+async function addTinderedPlaylist(id,status){
+  alert("in add");
+  var item = {playlistId: id, tinderStatus: status};
+  var db = await connectToTinderDB(dbName3,version3);
+  db.transaction(["tinderedPlaylists"], "readwrite").objectStore("tinderedPlaylists").add(item).onsuccess = function(event) {
+    //event.target.result == item.favId;
+    alert("add: " + item.playlistId);
+    db.close();
+  };
+}
 
 /************************************************/
 /*                  Ende                        */
