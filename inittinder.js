@@ -312,7 +312,9 @@ async function renderTinderPage(){
     notTinderedPlaylists.sort(function(a,b){return(a["tinderPosition"]>b["tinderPosition"])? 1 :((b["tinderPosition"]>a["tinderPosition"])? -1 :0);});
 
     //alert(notTinderedPlaylists[0].title);
-    addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
+    if(notTinderedPlaylists[notTinderedPlaylistIndex]){
+      addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
+    }
     isTinderPageInitialized=true;
   }
 
