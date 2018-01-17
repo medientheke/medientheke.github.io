@@ -74,7 +74,7 @@ li{
 /*************  der Header  **********************/
 
 .header{
-  /*groe�e:*/
+  /*groesse:*/
     width: 100%;
     height: 50px;
   /*position des Headers*/
@@ -97,7 +97,7 @@ li{
     display: flex;
     /*    -webkit-box-orient: horizontal;  veraltet*/
     /* -webkit-box-direction: normal;      veraltet*/
-   /*-webkit-flex-direction: row;          veraltet*/
+    /*-webkit-flex-direction: row;         veraltet*/
     /*    -ms-flex-direction: row;         veraltet*/
             flex-direction: row;
     /*-webkit-flex-wrap: nowrap;            veraltet*/
@@ -168,33 +168,171 @@ html, body{
 }
 
 /*************************************************/
-/* das Tinder-template (und fuer neue Favoriten) */
+/*        TINDER-WILLKOMMENS-BILDSCHIRM          */
 /*************************************************/
-/*<div class="tinder-container" id="tinder-container">
- *  <nav class="tinder-nav">
- *   <Button>bannen</button>
- *   <Button>unentschlossen</button>
- *   <Button>Favorit</button>
- * </nav>
- */
-/*   <div class="rahmen">
- *     <div class="playlist-id">
- *       <picture>
- *         <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
- *            {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x">
- *         <!-- fallback -->
- *         <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}">
- *       </picture>
- *       <div class="info-div">
- *         <div class="title-div"><h3>{{title}}</h3></div>
- *         <div class="published-at-div">&#8227 am {{published-at}} ver�ffentlicht</div>
- *         <div class="last-update-div">&#8227 {{last-update}} aktualisiert</div>
- *         <div class="video-count">&#8227 {{video-count}}</div>
- *         <button class="playlist-id">Alle Folgen anzeigen</button>
- *       </div>
- *     </div>
- *   </div>
- */
+
+#intro1, #intro2, #intro3, #intro4, #intro5{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  font-size: 21px;
+  text-align: center;
+}
+#intro1{
+  opacity: 0;
+  animation: duration 3s;
+}
+
+@keyframes duration {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+/*************************************************/
+/* das Tinder-template                           */
+/*************************************************/
+
+.tinder-rahmen:first-of-type{
+  z-index: 3;
+}
+
+.tinder-rahmen:nth-of-type(2){
+  z-index: 2;
+}
+
+.tinder-rahmen{
+  position:absolute;
+  top: 48px;
+  width:100vw;
+  /*width: 360px;*/
+  max-width: 100%;
+  height: calc(100vh - 48px - 48px);
+  overflow: hidden;
+  /*display:flex;*/
+  /*flex-wrap: nowrap;*/
+  /*justify-content: center;*/
+  /*align-content: flex-start;*/
+}
+.tinder-rahmen .tinder-remark1,.tinder-rahmen .tinder-remark2,.tinder-rahmen .tinder-remark3{
+  position: absolute;
+  top: 20px;
+  margin: auto;
+  width: 320px; max-width: 100%; height: auto;
+  opacity: 0.0;
+}
+.tinder-rahmen>div{
+  position:relative;
+  margin:auto;
+  width: 360px;
+  max-width: 100%;
+  height: 360px;
+  border: 1px solid lightgrey;
+  background: #fff;
+  display:flex; flex-wrap: wrap; justify-content: center; align-content: flex-start;
+}
+.tinder-rahmen img{
+  margin-top: 20px;
+  width: 320px; max-width: 100%; height: auto;
+}
+.tinder-rahmen .info-div{
+  width: 320px; max-width: 100%;
+  display:flex; flex-wrap: wrap; justify-content: space-between; align-content: flex-start;
+}
+
+.tinder-rahmen .title-div{
+  width: 100%;
+  color: black;
+  padding: 0px 0 5px 0;
+  border-bottom: 1px solid lightgrey;
+}
+.tinder-rahmen .video-count, .tinder-rahmen .last-update-div, .tinder-rahmen .publidhed-at-div{
+  width: 100%;
+}
+.tinder-rahmen .video-count{
+  font-size: 0.85rem;
+  /*border-bottom: 1px solid lightgrey;*/
+}
+.tinder-rahmen button{
+  width: 100%;
+  height: 48px;
+  font-size: 1rem;
+  margin: 0px 0 0px 0; border: 0; padding: 0;
+}
+
+
+button:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+/**************************************************************/
+/*            Tinder-main-nav                                 */
+/**************************************************************/
+
+.tinder-main-nav {
+  z-index:100000;
+  background: white;
+  width: 100%;
+  height: 48px;
+  position: fixed;
+  top: 0px;
+  border-bottom: 1px solid darkgrey;
+  display:flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
+.tinder-main-nav img{
+  height: 28px;
+  width: 28px;
+}
+
+.tinder-main-nav>button{
+  /*width:40px;*/
+  /*height:40px;*/
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  text-align: center;
+}
+/**************************************************************/
+/*            Tinder-swipe-nav                                */
+/**************************************************************/
+
+.tinder-swipe-nav {
+  z-index:100000;
+  width: 100%;
+  position: fixed;
+  bottom: 47px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.tinder-swipe-nav>button{
+  margin: 5px;
+  width:65px;
+  height:65px;
+  border: 2px solid lightgrey;
+  border-radius: 50%;
+  text-align:center;
+}
+
+.tinder-swipe-nav>button:nth-of-type(2){
+  margin: 5px;
+  width:55px;
+  height:55px;
+  border: 2px solid lightgrey;
+  border-radius: 50%;
+}
+/************************************************************/
+/*   Das Favoriten-Template (.rahmne)                       */
+/************************************************************/
 
 #favoriten-mit-neuen-folgen-container{
   width: 100%;
@@ -203,10 +341,12 @@ html, body{
   justify-content: center;
 }
 
+
 .rahmen{
   position:relative;
   width: 360px;
   max-width: 100%;
+  /*height: 100vh;*/
   overflow: hidden;
   /*display:flex;*/
   /*flex-wrap: nowrap;*/
@@ -255,16 +395,6 @@ html, body{
   margin: 0px 0 0px 0; border: 0; padding: 0;
 }
 
-.tinder-nav {
-  z-index:100000;
-  position: fixed;
-  bottom: 48px;
-}
-
-.tinder-nav button{
-  width:48px;
-  height:48px
-}
 
 /*************************************************/
 /*             Main-Menu                         */
