@@ -47,28 +47,69 @@
 
     <!-- TINDER-CONTAINER -->
     <div id="tinder-container">
-      <div>
-        Willkommen bei Tinderbeans, swipe dich durch alle Formate der Rocketbeans
-      </div>
-      <div>
-        links swipen
-      </div>
-      <div>
-        rechts swipen
-      </div>
-      <div>
-        hoch swipen
-      </div>
-      <div>
-        Nutzungsbedingungen/Cookies akzeptieren/nicht mehr anzeigen
-      </div>
       <!-- List of Buttons HIER KOMMEN DIE TINDER-TEMPLATES HIN -->
-      <nav class="tinder-nav">
-        <Button>bannen</button>
-        <Button>unentschlossen</button>
-        <Button>favorit</button>
+      <nav class="tinder-main-nav">
+        <button><img src="img/tinder.svg" alt="Suche"/><p>Suche</p></button>
+        <button><img src="img/tinder.svg" alt="Swipen"/><p>Swipen</p></button>
+        <button><img src="img/tinder.svg" alt="Kategorien"><p>Kategorien</p></p></button>
       </nav>
-      <!-- Namen der Playlists -->
+      <nav class="tinder-swipe-nav" id="tinder-swipe-nav">
+        <button><h1>✔</h1><p>Like</p></button>
+        <button><h1>⏭</h1><p>Skip</p></button>
+        <button><h1>✘</h1><p>Nope</p></p></button>
+      </nav>
+      <!-- Die Tutorial-Swiper -->
+      <!--
+      <div id="intro1">
+        <div>
+          Willkommen bei Tinderbeans
+        </div>
+        <div>
+          Swipe dich durch die Mediathek der Rocket Beans
+        </div>
+      </div>
+      <div>
+        <div id="intro2">
+          <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
+          <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
+          <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+          <div>
+            Links Swipen zum Liken
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="intro3">
+          <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
+          <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
+          <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+          <div>
+            Rechts Swipen zum Disliken
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="intro4">
+          <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
+          <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
+          <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+          <div>
+            Hoch Swipen zum Überspringen
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="intro5">
+          <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
+          <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
+          <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+          <div>
+            Nutzungsbedingungen/Cookies akzeptieren/nicht mehr anzeigen
+          </div>
+        </div>
+      </div>
+      -->
+      <!-- Hier werden die Tinder-Vorschlaege angehangen -->
       <!------------------------------------------------------------
       -------------------------------------------------------------->
     </div> <!-- ENDE DES TINDER-CONTAINERS -->
@@ -407,17 +448,19 @@
 
     <!-- TINDER-TEMPLATE DES TINDER-CONTAINER -->
     <template id="tinder-template">
-      <div class="rahmen">
+      <div class="tinder-rahmen">
         <div class="playlist-id">
-          <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
-          <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
-          <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
-          <picture>
-            <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
+          <div class="picture-rahmen">
+            <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
+            <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
+            <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+            <picture>
+              <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
                {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x"/>
-            <!-- fallback -->
-            <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}"/>
-          </picture>
+              <!-- fallback -->
+              <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}"/>
+            </picture>
+          </div>
           <div class="info-div">
             <!-- <div class="published-at-div">&#8227 am {{published-at}} veroeffentlicht</div> -->
             <!-- <div class="last-update-div">&#8227 {{last-update}} aktualisiert</div> -->
