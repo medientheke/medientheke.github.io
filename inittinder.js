@@ -342,36 +342,36 @@ async function renderTinderPage(){
             //alert("onRun-id= "+notTinderedPlaylists[notTinderedPlaylistIndex+1].id);
           }
         }).onLeft(function(){
+          addTinderedPlaylist(this.element.className,"dislike");
+          //alert("onLeft-id= "+videoId);
+          let emnt = this.element;
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+          },300,emnt);
           if(notTinderedPlaylists[notTinderedPlaylistIndex+1]){
-            addTinderedPlaylist(this.element.className,"dislike");
-            //alert("onLeft-id= "+videoId);
-            let emnt = this.element;
-            setTimeout(function(element){
-              element.parentElement.parentElement.removeChild(element.parentElement);
-            },300,emnt);
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
           }
         }).onRight(function(){
+          addFavorite(this.element.className);
+          addTinderedPlaylist(this.element.className,"like");
+          let emnt = this.element;
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+          },300,emnt);
           if(notTinderedPlaylists[notTinderedPlaylistIndex+1]){
-            addFavorite(this.element.className);
-            addTinderedPlaylist(this.element.className,"like");
-            let emnt = this.element;
-            setTimeout(function(element){
-              element.parentElement.parentElement.removeChild(element.parentElement);
-            },300,emnt);
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
           }
         }).onUp(function(){
+          addTinderedPlaylist(this.element.className,"aufgeschoben");
+          let emnt = this.element;
+          setTimeout(function(element){
+            element.parentElement.parentElement.removeChild(element.parentElement);
+          },300,emnt);
           if(notTinderedPlaylists[notTinderedPlaylistIndex+1]){
-            addTinderedPlaylist(this.element.className,"aufgeschoben");
-            let emnt = this.element;
-            setTimeout(function(element){
-              element.parentElement.parentElement.removeChild(element.parentElement);
-            },300,emnt);
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
