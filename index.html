@@ -20,11 +20,11 @@
   <div class="loader" id="loader"></div>
   <!-- Hauptmenu -->
   <nav id="main-menu">
-    <div id="mm-fav"> </div>
-    <div id="mm-tinder"> </div>
-    <div id="mm-rubriken"> </div>
-    <div id="mm-playlist"> </div>
-    <div id="mm-properties"> </div>    
+    <a href="#favoriten/" id="mm-fav"> </a>
+    <a href="#tinder/" id="mm-tinder"> </a>
+    <a href="#kategorien/" id="mm-rubriken"> </a>
+    <a href="#format/" id="mm-playlist"> </a>
+    <a href="#properties/" id="mm-properties"> </a>
   </nav>
 
   <div class="main-content">
@@ -51,12 +51,12 @@
       <nav class="tinder-main-nav">
         <button><img src="img/tinder.svg" alt="Suche"/><p>Suche</p></button>
         <button><img src="img/tinder.svg" alt="Swipen"/><p>Swipen</p></button>
-        <button><img src="img/tinder.svg" alt="Kategorien"><p>Kategorien</p></p></button>
+        <button><img src="img/tinder.svg" alt="Kategorien"><p>Kategorien</p></button>
       </nav>
       <nav class="tinder-swipe-nav" id="tinder-swipe-nav">
         <button><h1>✔</h1><p>Like</p></button>
         <button><h1>⏭</h1><p>Skip</p></button>
-        <button><h1>✘</h1><p>Nope</p></p></button>
+        <button><h1>✘</h1><p>Nope</p></button>
       </nav>
       <!-- Die Tutorial-Swiper -->
       <!--
@@ -117,13 +117,13 @@
     <!-- CATEGORIEN-CONTAINER -->
     <div id="categories-container">
       <div id="categories-container-top-menu">
-        <div id="category-button-rbtv" class="category-button">Rocket Beans</div>
-        <div id="category-button-community" class="category-button">Community</div>
+        <a href="#kategorien/" id="category-button-rbtv" class="category-button">Rocket Beans</a>
+        <a href="#kategorien/community" id="category-button-community" class="category-button">Community</a>
       </div>
       <div id="categories-container-rbtv">
         <div id="categories-container-rbtv-buttons-div">
-          <div id="category-button-gaming" class="category-button">Gaming</div>
-          <div id="category-button-non-gaming" class="category-button">Non-Gaming</div>
+          <a href="#kategorien/gaming" id="category-button-gaming" class="category-button">Gaming</a>
+          <a href="#kategorien/non-gaming" id="category-button-non-gaming" class="category-button">Non-Gaming</a>
         </div>
         <div id="categories-container-rbtv-non-gaming">
           <!-- LISTE DER KATEGORIEN--------------------------------------------------------
@@ -450,23 +450,23 @@
     <template id="tinder-template">
       <div class="tinder-rahmen">
         <div class="playlist-id">
-          <div class="picture-rahmen">
-            <img class="tinder-remark1" src="img/tinderAufschieben.png" alt="aufschieben"/>
-            <img class="tinder-remark2" src="img/tinderNope.png" alt="nope"/>
-            <img class="tinder-remark3" src="img/tinderLike.png" alt="like"/>
+          <a href="{{#format/videoId}}" class="picture-rahmen">
+            <img class="tinder-remark1" src="img/tinder-skip.svg" alt="aufschieben"/>
+            <img class="tinder-remark2" src="img/tinder-nope.svg" alt="nope"/>
+            <img class="tinder-remark3" src="img/tinder-like.svg" alt="like"/>
             <picture>
               <source media="(max-width: 360px)" srcset="{{thumbnail-320w.jpg}} 1x, {{thumbnail-480w.jpg}} 1.5x,
                {{thumbnail-640w.jpg}} 2x, {{thumbnail-1280w.jpg}} 4x"/>
               <!-- fallback -->
               <img class="playlist-ids" src="{{thumbnail-320w}}" alt="{{thumbnail-text}}"/>
             </picture>
-          </div>
+          </a>
           <div class="info-div">
             <!-- <div class="published-at-div">&#8227 am {{published-at}} veroeffentlicht</div> -->
             <!-- <div class="last-update-div">&#8227 {{last-update}} aktualisiert</div> -->
             <div class="video-count">&#8227 {{video-count}}</div>
             <div class="title-div"><h3>{{title}}</h3></div>
-            <button class="playlist-id">Alle Folgen anzeigen</button>
+            <a href="{{format/videoId}}" class="show-all-link">Alle Folgen anzeigen</a>
           </div>
         </div>
       </div>
