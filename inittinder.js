@@ -21,9 +21,6 @@ var isCategoriesPageInitialized=[];
 /*****************************************/
 
 async function initTinder(){
-  activateMainMenuButtons();
-  activateCategoryPageButtons();
-
   window.cookieconsent.initialise({
     "palette": {
       "popup": {
@@ -93,45 +90,6 @@ async function initTinder(){
   });
   window.dispatchEvent(new HashChangeEvent("hashchange"));
 }
-
-/*****************************************/
-/*            Main-Menu                  */
-/*****************************************/
-
-function activateMainMenuButtons(){
-  document.getElementById('mm-fav').addEventListener('click',function(){
-    window.location.hash = 'favoriten/';
-  });
-  document.getElementById('mm-tinder').addEventListener('click',function(){
-    window.location.hash = 'tinder/';
-  });
-  document.getElementById('mm-rubriken').addEventListener('click',function(){
-    window.location.hash = 'kategorien/';
-  });
-  document.getElementById('mm-playlist').addEventListener('click',function(){
-    window.location.hash = 'format/'+singlePlaylistId;
-  });
-  document.getElementById('mm-properties').addEventListener('click',function(){
-    window.location.hash = 'properties/';
-  });
-}
-function activateCategoryPageButtons(){
-  document.getElementById('category-button-rbtv').addEventListener('click',function(){
-    window.location.hash = 'kategorien/';
-  });
-  document.getElementById('category-button-community').addEventListener('click',function(){
-    window.location.hash = 'kategorien/community';
-  });
-  document.getElementById('category-button-gaming').addEventListener('click',function(){
-    window.location.hash = 'kategorien/gaming';
-  });
-  document.getElementById('category-button-non-gaming').addEventListener('click',function(){
-    window.location.hash = 'kategorien/non-gaming';
-  });
-
-}
-
-
 
 /****************************************************/
 /*   ********************************************   */
@@ -269,15 +227,6 @@ async function renderTinderPage(){
   document.getElementById("tinder-container").classList.add("invisible");
   document.getElementById("categories-container").classList.add("invisible");
 
-    //var tinderSwipe = new Swipe(document.getElementById("intro2"));
-    //tinderSwipe.run();
-    //var tinderSwipe = new Swipe(document.getElementById("intro3"));
-    //tinderSwipe.run();
-    //var tinderSwipe = new Swipe(document.getElementById("intro4"));
-    //tinderSwipe.run();
-    //var tinderSwipe = new Swipe(document.getElementById("intro5"));
-    //tinderSwipe.run();
-
     //document.getElementById("intro2").classList.add("invisible");
     //document.getElementById("intro3").classList.add("invisible");
     //document.getElementById("intro4").classList.add("invisible");
@@ -352,6 +301,11 @@ async function renderTinderPage(){
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
+          }else{
+            let children = document.getElementById("tinder-swipe-nav").children;
+            for (let i=0;i<children.length;i++){
+              children[i].setAttribute('disabled','disabled');
+            }
           }
         }).onRight(function(){
           addFavorite(this.element.className);
@@ -364,8 +318,13 @@ async function renderTinderPage(){
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
+          }else{
+            let children = document.getElementById("tinder-swipe-nav").children;
+            for (let i=0;i<children.length;i++){
+              children[i].setAttribute('disabled','disabled');
+            }
           }
-        }).onUp(function(){
+         }).onUp(function(){
           addTinderedPlaylist(this.element.className,"aufgeschoben");
           let emnt = this.element;
           setTimeout(function(element){
@@ -375,8 +334,13 @@ async function renderTinderPage(){
             notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
             tinderSwipe.changeElement(document.getElementById("tinder-container").querySelector("."+notTinderedPlaylists[notTinderedPlaylistIndex].id)).run();
             //alert(this.element.className);
+          }else{
+            let children = document.getElementById("tinder-swipe-nav").children;
+            for (let i=0;i<children.length;i++){
+              children[i].setAttribute('disabled','disabled');
+            }
           }
-        }).run();
+         }).run();
         document.getElementById("tinder-swipe-nav").firstElementChild.addEventListener('click',function(){
           tinderSwipe.swipeRight();
         });
@@ -386,11 +350,20 @@ async function renderTinderPage(){
         document.getElementById("tinder-swipe-nav").children[2].addEventListener('click',function(){
           tinderSwipe.swipeLeft();
         });
+      }else{
+        let children = document.getElementById("tinder-swipe-nav").children;
+        for (let i=0;i<children.length;i++){
+          children[i].setAttribute('disabled','disabled');
+        }
+      }
+    }else{
+      let children = document.getElementById("tinder-swipe-nav").children;
+      for (let i=0;i<children.length;i++){
+        children[i].setAttribute('disabled','disabled');
       }
     }
     isTinderPageInitialized=true;
   }
-
   document.getElementById("tinder-container").classList.remove("invisible");
   document.getElementById("loader").classList.add("invisible");
 }
@@ -777,7 +750,7 @@ async function addTinderTemplateToTinderPage(videoId,thumbnail,title,description
   var template = document.getElementById("tinder-template");
   var clone = document.importNode(template.content, true);
   //die Infos hinzufuegen
-  clone.querySelectorAll('.playlist-id').forEach(function(i){i.setAttribute("class",videoId);});
+  clone.querySelector('.playlist-id').setAttribute("class",videoId);
   if(thumbnail.maxres!=undefined){
     clone.querySelector('source').setAttribute("srcset",thumbnail.medium.url+" 1x, "+thumbnail.maxres.url+" 4x");
   }else{
@@ -792,23 +765,15 @@ async function addTinderTemplateToTinderPage(videoId,thumbnail,title,description
   var publishedAt = erstelltAm.substring(8, 10)+"."+erstelltAm.substring(5, 7)+"."+erstelltAm.substring(0, 4);
   var lastUpdate = lastUpdate.substring(8, 10)+"."+lastUpdate.substring(5, 7)+"."+lastUpdate.substring(0, 4);
   clone.querySelector('.video-count').innerHTML= (videoCount===1) ? "1 Video, am "+publishedAt+" ver&oumlffentlicht" : (publishedAt===lastUpdate) ? videoCount+" Videos, am "+publishedAt+" ver&oumlffentlicht" : videoCount+" Videos, von "+publishedAt+" - "+lastUpdate+" aktiv" ;
-
-  //die EventListener hinzufuegen
-  //clone.querySelector('.tinder-remark1').addEventListener('click',function(){
+  clone.querySelectorAll('a').forEach(function(i){
+    i.setAttribute('href','#format/' + videoId);
+  });
+  //clone.querySelector('.picture-rahmen').addEventListener('click',function(){
   //  window.location.hash = 'format/' + videoId;
-  //});
-  //clone.querySelector('.tinder-remark2').addEventListener('click',function(){
+  //},true);
+  //clone.querySelector('button').addEventListener('click',function(){
   //  window.location.hash = 'format/' + videoId;
-  //});
-  //clone.querySelector('.tinder-remark3').addEventListener('click',function(){
-  //  window.location.hash = 'format/' + videoId;
-  //});
-  clone.querySelector('.picture-rahmen').addEventListener('click',function(){
-    window.location.hash = 'format/' + videoId;
-  },true);
-  clone.querySelector('button').addEventListener('click',function(){
-    window.location.hash = 'format/' + videoId;
-  },true);
+  //},true);
   // Neue Zeile (row) klonen und in die Tabelle einfuegen
   var tinderSwiper = document.getElementById("tinder-container");
   tinderSwiper.appendChild(clone);
@@ -830,80 +795,6 @@ async function createTinderSwipe(videoId,thumbnail,title,description,erstelltAm,
   return new Swipe(tinderSwiper.querySelector("."+videoId));
 }
 
-//async function addToTinderSwiper(videoId,thumbnail,title,description,erstelltAm,lastUpdate,videoCount){
-//  var template = document.getElementById("tinder-template");
-//  var clone = document.importNode(template.content, true);
-//  //die Infos hinzufuegen
-//  clone.querySelectorAll('.playlist-id').forEach(function(i){i.setAttribute("class",videoId);});
-//  if(thumbnail.maxres!=undefined){
-//    clone.querySelector('source').setAttribute("srcset",thumbnail.medium.url+" 1x, "+thumbnail.maxres.url+" 4x");
-//  }else{
-//    clone.querySelector('source').setAttribute("srcset",thumbnail.medium.url+" 1x");
-//  }
-//  clone.querySelector('.playlist-ids').setAttribute("src",thumbnail.medium.url);
-//  clone.querySelector('.playlist-ids').setAttribute("alt","thumbnail von "+title);
-//  clone.querySelector('h3').innerHTML=title;
-//  //clone.querySelector('.published-at-div').innerHTML="&#8227 am "+erstelltAm.substring(8, 10)+"."+erstelltAm.substring(5, 7)+"."+erstelltAm.substring(0, 4)+" ver&oumlffentlicht";
-//  //clone.querySelector('.last-update-div').innerHTML="&#8227 am "+lastUpdate.substring(8, 10)+"."+lastUpdate.substring(5, 7)+"."+lastUpdate.substring(0, 4)+" zuletzt aktualisiert";
-//  //clone.querySelector('.video-count').innerHTML="&#8227 "+videoCount+" Videos insgesamt";
-//  var publishedAt = erstelltAm.substring(8, 10)+"."+erstelltAm.substring(5, 7)+"."+erstelltAm.substring(0, 4);
-//  var lastUpdate = lastUpdate.substring(8, 10)+"."+lastUpdate.substring(5, 7)+"."+lastUpdate.substring(0, 4);
-//  clone.querySelector('.video-count').innerHTML= (videoCount===1) ? "1 Video, am "+publishedAt+" ver&oumlffentlicht" : (publishedAt===lastUpdate) ? videoCount+" Videos, am "+publishedAt+"ver&oumlffentlicht" : videoCount+" Videos, von "+publishedAt+" - "+lastUpdate+" aktiv" ;
-//
-//  //die EventListener hinzufuegen
-//  //clone.querySelector('.tinder-remark1').addEventListener('click',function(){
-//  //  window.location.hash = 'format/' + videoId;
-//  //});
-//  //clone.querySelector('.tinder-remark2').addEventListener('click',function(){
-//  //  window.location.hash = 'format/' + videoId;
-//  //});
-//  //clone.querySelector('.tinder-remark3').addEventListener('click',function(){
-//  //  window.location.hash = 'format/' + videoId;
-//  //});
-//  clone.querySelector('.playlist-ids').addEventListener('click',function(){
-//    window.location.hash = 'format/' + videoId;
-//  });
-//  clone.querySelector('button').addEventListener('click',function(){
-//    window.location.hash = 'format/' + videoId;
-//  });
-//  // Neue Zeile (row) klonen und in die Tabelle einfuegen
-//  var tinderSwiper = document.getElementById("tinder-container");
-//  tinderSwiper.appendChild(clone);
-//  //HIER KONSTRUKTOR STARTEN FUER DEN START DES SWIPERS
-//  console.log(tinderSwiper.lastElementChild);
-//  var tinderSwipe = new Swipe(tinderSwiper.querySelector("."+videoId));
-//  //alert(tinderSwipe.element);
-//  tinderSwipe.onLeft(function(evt){
-//          //alert(this.element.className);
-//          addTinderedPlaylist(this.element.className,"dislike");
-//          setTimeout(function(element){
-//            element.parentElement.parentElement.removeChild(element.parentElement);
-//            notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
-//            addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
-//          },300,this.element);
-//  });
-//  tinderSwipe.onRight(function(){
-//    addFavorite(this.element.className);
-//    addTinderedPlaylist(this.element.className,"like");
-//    setTimeout(function(element){
-//    element.parentElement.parentElement.removeChild(element.parentElement);
-//      notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
-//      addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
-//    },300,this.element);
-//  });
-//  tinderSwipe.onUp(function(){
-//          //alert(this.element.className);
-//          addTinderedPlaylist(this.element.className,"aufgeschoben");
-//          setTimeout(function(element){
-//            element.parentElement.parentElement.removeChild(element.parentElement);
-//            notTinderedPlaylistIndex=notTinderedPlaylistIndex+1;
-//            addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
-//          },300,this.element);
-//  });
-//  tinderSwipe.run();
-//  console.log("ende");
-//}
-
 /****************************************************/
 /*            Tinder-Swiper                         */
 /****************************************************/
@@ -915,20 +806,24 @@ class Swipe {
     this.xMove = null; this.yMove = null;
     this.touchStart = null; this.touchStartTime = null; this.swipe = null;
     this.element = (typeof(element) === 'string') ? document.querySelector(element) : element;
-    this.elementLeft = this.element.offsetLeft;
-    this.element.style.left = this.elementLeft;
-    this.elementTop = this.element.offsetTop;
-    this.element.style.top = this.elementTop;
+    this.elementLeft = this.element.style.left;
+    //this.element.style.left = this.elementLeft;
+    this.element.style.left = 0+"px";
+    //this.elementTop = this.element.offsetTop;
+    //this.element.style.top = this.elementTop;
+    this.element.style.top = 0+"px";
+
   }
   changeElement(element){
     this.element=element;
     this.xDown = null; this.yDown = null;
     this.xMove = null; this.yMove = null;
     this.touchStart = null; this.touchStartTime = null; this.swipe = null;
-    this.elementLeft = this.element.offsetLeft;
-    this.element.style.left = this.elementLeft;
-    this.elementTop = this.element.offsetTop;
-    this.element.style.top = this.elementTop;
+    //this.elementLeft = this.element.offsetLeft;
+    this.element.style.left = 0;
+    //alert(this.element.style.left);
+    //this.elementTop = this.element.offsetTop;
+    this.element.style.top = 0;
     return this;
   }
 
@@ -941,30 +836,36 @@ class Swipe {
 /*  *  *  * SWIPE-Functions *  *  *  *  *  *  *  */
   swipeLeft(){
     this.element.style.transitionDuration="0.3s";
+    this.element.querySelector('.tinder-remark2').style.opacity=1;;
     var xl = this.element.offsetWidth;
-    var yl = this.element.offsetHeight;
+    //var yl = this.element.offsetHeight;
     //var li = this.infos.firstElementChild.offsetWidth;
-    var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
-    var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
-    this.element.style.left = this.elementLeft-xl+"px"; this.elementLeft = this.elementLeft-xl;
+    //var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
+    //var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
+    //this.element.style.left = this.elementLeft-xl+"px"; this.elementLeft = this.elementLeft-xl;
+    this.element.style.left = -xl+"px"; //this.elementLeft = this.elementLeft-xl;//wenn das div relativ zum Tinder-rahmen positioniert wird
     //HIER DISLIKEN
     this.onLeft();
   }
   swipeRight(){
     this.element.style.transitionDuration="0.3s";
+    this.element.querySelector('.tinder-remark3').style.opacity=1;
     var xl = this.element.offsetWidth;
-    var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
-    this.element.style.left = this.elementLeft+xl+"px";
+    //var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
+    //this.element.style.left = this.elementLeft+xl+"px";
+    this.element.style.left = xl+"px";//wenn das div relativ zum Tinder-rahmen positioniert wird
     this.onRight();
   }
   swipeUp(){
     this.element.style.transitionDuration="0.3s";
-    var xl = this.element.offsetWidth;
-    var yl = this.element.offsetHeight;
+    this.element.querySelector('.tinder-remark1').style.opacity=1;;
+    //var xl = this.element.offsetWidth;
+    //var yl = this.element.offsetHeight;
     //var li = this.infos.firstElementChild.offsetWidth;
-    var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
-    var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
-    this.element.style.top = this.elementTop-this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+    //var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
+    //var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
+    //this.element.style.top = this.elementTop-this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+    this.element.style.top = -this.element.offsetHeight+"px"; //this.elementTop = this.elementTop-this.element.offsetHeight;//wenn das div relativ zum Tinder-rahmen positioniert wird
     //HIER AUFGESCHOBEN
     this.onUp();
   }
@@ -984,10 +885,10 @@ class Swipe {
     if(this.swipe === true){
       evt.preventDefault();
       this.element.style.transitionDuration="0s";
-      //this.infos.style.transitionDuration="0s";
-      this.element.style.left = this.elementLeft-this.xDown+this.xMove+"px";
-      //this.element.style.top = -this.yDown+this.yMove+"px";
-      this.element.style.top = this.elementTop-this.yDown+this.yMove+"px";
+      //this.element.style.left = this.elementLeft-this.xDown+this.xMove+"px";
+      this.element.style.left = -this.xDown+this.xMove+"px"; // wenn das div relativ zum tinder-rahmen positioniert wird
+      //this.element.style.top = this.elementTop-this.yDown+this.yMove+"px";
+      this.element.style.top = -this.yDown+this.yMove+"px";  // wenn das div relativ zum tinder-rahmen positioniert wird
       //alert(this.element.style.left);
       if (Math.abs(-this.yDown+this.yMove)>Math.abs(-this.xDown+this.xMove)){
         document.querySelector('.tinder-remark1').style.opacity = -3*(-this.yDown+this.yMove)/this.element.offsetHeight;
@@ -1009,14 +910,15 @@ class Swipe {
       var xl = this.element.offsetWidth;
       var yl = this.element.offsetHeight;
       //var li = this.infos.firstElementChild.offsetWidth;
-      var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
-      var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
+      //var x = this.elementLeft+Math.round((-this.xDown+this.xMove)/xl)*xl;
+      //var y = this.elementTop+Math.round((-this.yDown+this.yMove)/yl)*yl;
       //var y = this.infosLeft+Math.round((-this.xDown+this.xMove)/lt)*this.infos.firstElementChild.offsetWidth;
       //var rest = (this.elementLeft%xl>=0) ? this.elementLeft%xl : this.elementLeft%xl+xl;
       if(Math.abs(-this.xDown+this.xMove)>=Math.abs(-this.yDown+this.yMove)){ //dh. zur Seite geswipet
         if( (Math.round((-this.xDown+this.xMove)/xl)>=1) || (this.xMove-this.xDown)/(this.touchEndTime-this.touchStartTime)>xl/1000 /*&& this.elementLeft+xl<=rest*/){
-          this.element.style.left = this.elementLeft+xl+"px"; this.elementLeft = this.elementLeft+xl;
-          //HIER LIKEN
+          //this.element.style.left = this.elementLeft+xl+"px"; this.elementLeft = this.elementLeft+xl;
+          this.element.style.left = xl+"px"; //this.elementLeft = this.elementLeft+xl; // wenn das div relativ zum tinder-rahmen positioniert wird
+           //HIER LIKEN
           //alert(this.element.className);
           this.onRight();
           //addFavorite(this.element.className);
@@ -1027,7 +929,8 @@ class Swipe {
           //  addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
           //},300,this.element);
         }else if( (Math.round((-this.xDown+this.xMove)/xl)<=-1) || (this.xMove-this.xDown)/(this.touchEndTime-this.touchStartTime)<-xl/1000 /*&& this.elementLeft-xl>-(this.element.children.length-1)*xl*/){
-          this.element.style.left = this.elementLeft-xl+"px"; this.elementLeft = this.elementLeft-xl;
+          //this.element.style.left = this.elementLeft-xl+"px"; this.elementLeft = this.elementLeft-xl;
+          this.element.style.left = -xl+"px"; //this.elementLeft = this.elementLeft-xl; // wenn das div relativ zum tinder-rahmen positioniert wird
           //HIER DISLIKEN
           this.onLeft();
           //alert(this.element.className);
@@ -1038,8 +941,10 @@ class Swipe {
           //  addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
           //},300,this.element);
         }else{ //dh. Math.round((-this.xDown+this.xMove)/xl)===0 && Swipe-Geschindigkeit in x-Richtung = klein
-          this.element.style.left = x+"px"; //this.elementLeft = x;
-          this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          //this.element.style.left = x+"px"; //this.elementLeft = x;
+          this.element.style.left = 0+"px"; //wenn das div relativ zum tinder-rahmen angegeben wird
+          //this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          this.element.style.top = 0+"px"; //wenn das div relativ zum tinder-rahmen angegeben wird
           document.querySelector('.tinder-remark1').style.opacity = 0;
           document.querySelector('.tinder-remark2').style.opacity = 0;
           document.querySelector('.tinder-remark3').style.opacity = 0;
@@ -1047,9 +952,11 @@ class Swipe {
         }
       }else{ //dh. eher nach oben geschoben
         if( (Math.round((-this.yDown+this.yMove)/yl)<0) || (Math.round((-this.yDown+this.yMove)/yl)===0) && (this.yMove-this.yDown)/(this.touchEndTime-this.touchStartTime)<-yl/1000 /*&& this.elementLeft-yl>-(this.element.children.length-1)*yl*/ ){
-          this.element.style.left = x+"px"; //this.elementLeft = x;
+          //this.element.style.left = x+"px"; //this.elementLeft = x;
+          this.element.style.left = 0+"px"; // wenn das div relativ zum tinder-rahmen positioniert wird
           //this.element.style.top = -this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
-          this.element.style.top = this.elementTop-this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+          //this.element.style.top = this.elementTop-this.element.offsetHeight+"px"; this.elementTop = this.elementTop-this.element.offsetHeight;
+          this.element.style.top = -this.element.offsetHeight+"px"; //this.elementTop = this.elementTop-this.element.offsetHeight; // wenn das div relativ zum tinder-rahmen positioniert wird
           //HIER AUFGESCHOBEN
           this.onUp();
           //alert(this.element.className);
@@ -1060,9 +967,10 @@ class Swipe {
           //  addToTinderSwiper(notTinderedPlaylists[notTinderedPlaylistIndex].id,notTinderedPlaylists[notTinderedPlaylistIndex].thumbnails,notTinderedPlaylists[notTinderedPlaylistIndex].title,notTinderedPlaylists[notTinderedPlaylistIndex].description,notTinderedPlaylists[notTinderedPlaylistIndex].publishedAt,notTinderedPlaylists[notTinderedPlaylistIndex].lastUpdate,notTinderedPlaylists[notTinderedPlaylistIndex].itemCount);
           //},300,this.element);
         }else{
-          this.element.style.left = x+"px"; //this.elementLeft = x;
-          //this.element.style.top = "0px"; //this.elementTop = this.elementTop;
-          this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          //this.element.style.left = x+"px"; //this.elementLeft = x;
+          this.element.style.left = 0+"px"; //wenn das div relativ zum tinder-rahmen angegeben wird
+          //this.element.style.top = this.elementTop+"px"; //this.elementTop = this.elementTop;
+          this.element.style.top = "0px"; //wenn das div relativ zum tinder-rahmen angegeben wird
           document.querySelector('.tinder-remark1').style.opacity = 0;
           document.querySelector('.tinder-remark2').style.opacity = 0;
           document.querySelector('.tinder-remark3').style.opacity = 0;
