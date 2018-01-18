@@ -213,22 +213,21 @@ html, body{
   max-width: 100%;
   height: calc(100vh - 48px - 48px);
   overflow: hidden;
-  /*display:flex;*/
-  /*flex-wrap: nowrap;*/
-  /*justify-content: center;*/
-  /*align-content: flex-start;*/
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
 }
 .tinder-rahmen .tinder-remark1,.tinder-rahmen .tinder-remark2,.tinder-rahmen .tinder-remark3{
   position: absolute;
-  top: 20px;
+  /*top: 20px;*/
   margin: auto;
   width: 320px; max-width: 100%; height: auto;
-  opacity: 0.0;
+  opacity: 0;
 }
 .tinder-rahmen>div{
   position:relative;
-  margin:auto;
-  width: 360px;
+  width: 330px;
   max-width: 100%;
   height: 360px;
   border: 1px solid lightgrey;
@@ -257,17 +256,16 @@ html, body{
   font-size: 0.85rem;
   /*border-bottom: 1px solid lightgrey;*/
 }
-.tinder-rahmen button{
+.tinder-rahmen .show-all-link{
+  color: black;
+  background-color: white;
+  text-decoration: none;
+  text-align: center;
   width: 100%;
-  height: 48px;
+  padding: 12px 0;
+  border-bottom: 1px solid lightgrey;
+  margin: auto;
   font-size: 1rem;
-  margin: 0px 0 0px 0; border: 0; padding: 0;
-}
-
-
-button:focus {
-  outline: 0;
-  box-shadow: none;
 }
 
 /**************************************************************/
@@ -416,7 +414,7 @@ button:focus {
   justify-content: space-around;
   align-items: center;
 }
-#main-menu div{
+#main-menu a{
   width:48px;
   height:48px;
 }
