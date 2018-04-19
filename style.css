@@ -2,22 +2,18 @@
 /*        Fuer die Favoriten-Seite                */
 /*************************************************/
 
+/*********** damit die Seite im Browser wie auf dem Handy aussieht *****/
+*{
+  max-width: 480px;
+  margin: auto;
+}
+
 /***********  *,html und body, ol, ul, li  *******************/
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
-html{
-  max-width: 480px;
-  margin: auto;
-}
-
-body{
-  max-width: 480px;
-  margin:auto;
-}
-
 html, body{
   /*height: 100%;
   width: 100%;*/
