@@ -945,11 +945,13 @@ html, body{
 #categories-container-top-menu{
   border-bottom: 1px solid grey;
   width: 100vw;
+  max-width: 480px; /*damit es im Browser wie auf dem Handy aussieht*/
   display: flex;
   justify-content: space-around;
 }
 #categories-container-rbtv-buttons-div{
   width: 100vw;
+  max-width: 480px; /*damit es im Browser wie auf dem Handy aussieht*/
   display: flex;
   justify-content: space-around;
 }
