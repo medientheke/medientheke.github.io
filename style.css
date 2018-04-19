@@ -956,7 +956,7 @@ html, body{
   justify-content: space-around;
 }
 #categories-container-rbtv, #categories-container-community, #categories-container-rbtv-last-update{
-  /*max-width: 100%;*/
+  max-width: 480px; /*damit es im Browser wie auf dem Handy aussieht*/
   overflow: hidden;
 }
 .category-button{
