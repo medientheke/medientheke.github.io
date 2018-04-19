@@ -2,10 +2,15 @@
 /*        Fuer die Favoriten-Seite                */
 /*************************************************/
 
+
 /*********** damit die Seite im Browser wie auf dem Handy aussieht *****/
+
 *{
+
   max-width: 480px;
+
   margin: auto;
+
 }
 
 /***********  *,html und body, ol, ul, li  *******************/
@@ -14,6 +19,7 @@
   margin:0;
   padding:0;
 }
+
 html, body{
   /*height: 100%;
   width: 100%;*/
@@ -215,7 +221,7 @@ html, body{
   top: 48px;
   width:100vw;
   /*width: 360px;*/
-  max-width: 100%;
+  /*max-width: 100%;*/
   height: calc(100vh - 48px - 48px);
   overflow: hidden;
   display:flex;
@@ -232,7 +238,7 @@ html, body{
 }
 .tinder-rahmen>div{
   position:relative;
-  width: 330px;
+  width: 360px;
   max-width: 100%;
   height: 360px;
   border: 1px solid lightgrey;
@@ -289,12 +295,13 @@ html, body{
   justify-content: space-evenly;
   align-items: baseline;
 }
+
 .tinder-main-nav img{
   height: 28px;
   width: 28px;
 }
 
-.tinder-main-nav>button{
+.tinder-main-nav>a{
   /*width:40px;*/
   /*height:40px;*/
   margin: 0;
@@ -302,6 +309,10 @@ html, body{
   padding: 0;
   outline: 0;
   text-align: center;
+  text-decoration: none;
+  background-color: white;
+  color: black;
+  font-size: 12px;
 }
 /**************************************************************/
 /*            Tinder-swipe-nav                                */
@@ -479,7 +490,7 @@ html, body{
 /************************************************/
 #videoFrame{
   width: 100vw;
-  max-width: 720px;
+  /*max-width: 720px;*/
   max-height: 405px;
   height: 56.25vw;
 }
@@ -943,7 +954,7 @@ html, body{
   justify-content: space-around;
 }
 #categories-container-rbtv, #categories-container-community, #categories-container-rbtv-last-update{
-  max-width: 100%;
+  /*max-width: 100%;*/
   overflow: hidden;
 }
 .category-button{
