@@ -488,8 +488,8 @@ html, body{
 /************************************************/
 #videoFrame{
   width: 100vw;
-  /*max-width: 720px;*/
-  max-height: 405px;
+  max-width: 480px;
+  max-height: 270px;
   height: 56.25vw;
 }
 
