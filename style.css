@@ -1006,10 +1006,13 @@ html, body{
 /*  ERSTMAL KEINE besonderen Media Queries max-width: 30rem */
 /************************************************************/
 @media (max-width: 45rem) and (orientation:landscape){ 
+  
+  *{
+    max-width: 100vw;
+  }
   #single-playlist-container.invisible{
     display: block;
   }
-  
   #main-menu, #favoriten-container, #tinder-container, #categories-container, #loader{
     display: none;
   }
@@ -1022,7 +1025,6 @@ html, body{
     border: 0;
   }
   #single-playlist-container,#single-video-content{
-    max-width: 100%;
     padding: 0;
     margin: 0;
     border: 0;
